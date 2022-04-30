@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Опоры России</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_shortOutSide">Основная частота (файл)</string>
+    <string name="action_fullOutSide">Подробно (файл)</string>
+    <string name="action_addToArchive">Файл в архив</string>
+    <string name="action_clear">Очистить ленту</string>
+    <string name="action_dir">Архив</string>
+    <string name="action_delete">Удалить из архива</string>
+    <string name="reports_list">Просмотр отчётов</string>
+    <string name="reports_list_technicians">Отчёт техников</string>
+    <string name="reports_generate">Параметры генерации</string>
+    <string name="reports_button_generate">Получить отчёт</string>
+    <string name="date_start">Дата начала отчёта</string>
+    <string name="date_end">Дата окончания отчёта</string>
+</resources>
