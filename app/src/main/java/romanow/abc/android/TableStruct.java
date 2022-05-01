@@ -1,8 +1,8 @@
 package romanow.abc.android;
 
 public class TableStruct {
-    private String name;
-    private int style;
+    private String name = "";
+    private int style = 0;
     private int height;
     private int width;
 
@@ -45,6 +45,6 @@ public class TableStruct {
     }
 
     public void setStyle(int style) {
-        style = style;
+        this.style = style;
     }
 }

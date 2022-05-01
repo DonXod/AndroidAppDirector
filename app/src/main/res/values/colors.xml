@@ -17,11 +17,14 @@
     <color name="mainListHeader">#d5d5d5</color>
     <color name="textGray">#999999</color>
     <color name="status_online">#00FF00</color>
+    <color name="done">#aaddaa</color>
     <color name="status_busy">#FF0000</color>
+    <color name="was_sended">#cc8888</color>
     <color name="status_almostFree">#ff9c00</color>
     <color name="status_offline">#999999</color>
     <color name="status_lunch">#f6ff00</color>
     <color name="status_repairing">#0000FF</color>
+    <color name="need_to_pay">#666699</color>
     <color name="status_onOrder">#ff9e6e</color>
     <color name="contents_text">#ff000000</color>
     <color name="encode_view">#ffffffff</color>

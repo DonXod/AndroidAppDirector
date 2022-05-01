@@ -8,10 +8,8 @@
         android:id="@+id/textViewHead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/back_table"
         android:gravity="center"
         android:orientation="horizontal"
-
         android:padding="3dp"
         android:singleLine="false"
         android:text="text"

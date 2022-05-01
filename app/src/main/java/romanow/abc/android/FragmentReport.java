@@ -23,6 +23,9 @@ public class FragmentReport extends Fragment {
     private String title;
     private TableStruct[][] tbl;
     private TextView fld[][]=null;
+    private int iSelected;
+    private int jSelected;
+
 
     public FragmentReport(TableStruct[][] tableStruct, String title) {
         this.tbl = tableStruct;
@@ -49,7 +52,7 @@ public class FragmentReport extends Fragment {
         TextView textViewTitle = (TextView) view.findViewById(R.id.textReportName);
         textViewTitle.setText(title);
         LayoutInflater gen = this.getLayoutInflater();
-        fld=new TextView[tbl.length][tbl[0].length];
+        fld = new TextView[tbl.length][tbl[0].length];
         for(int i = 0; i < tbl.length; i++) fld[i] = new TextView[tbl[0].length];
         LinearLayout list;
         LinearLayout item;
@@ -59,10 +62,12 @@ public class FragmentReport extends Fragment {
         for(int j = 0; j < tbl[0].length; j++) {
             item = (LinearLayout) gen.inflate(R.layout.table_head_item, null);
             TextView textView = (TextView) item.findViewById(R.id.textViewHead);
+            fld[0][j] = textView;
             textView.setText(tbl[0][j].getName());
             textView.setWidth(tbl[0][j].getWidth());
             textView.setHeight(tbl[0][j].getHeight());
             textView.setGravity(Gravity.CENTER);
+            setBackgroundText(textView, tbl[0][j]);
             list.addView(item);
         }
         table.addView(list);
@@ -70,14 +75,73 @@ public class FragmentReport extends Fragment {
         for (int i = 1; i < tbl.length; i++) {
             list = (LinearLayout) gen.inflate(R.layout.table_list_items, null);
             for(int j = 0; j < tbl[0].length; j++) {
+                final int iSelect = i;
+                final int jSelect = j;
                 item = (LinearLayout) gen.inflate(R.layout.table_item, null);
+                item.setClickable(true);
                 TextView textView = (TextView) item.findViewById(R.id.textViewItem);
+                fld[i][j] = textView;
                 textView.setText(tbl[i][j].getName());
                 textView.setWidth(tbl[i][j].getWidth());
                 textView.setHeight(tbl[i][j].getHeight());
+                setBackgroundText(textView, tbl[i][j]);
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        clearSelect();
+                        if ((iSelected == iSelect) && (jSelected == jSelect)) {
+                            iSelected = 0;
+                            jSelected = 0;
+                            return;
+                        }
+                        iSelected = iSelect;
+                        jSelected = jSelect;
+                        addSelect();
+                    }
+                });
                 list.addView(item);
             }
             table.addView(list);
+        }
+    }
+
+    private void clearSelect() {
+        for (int i = 1; i < tbl.length; i++) {
+            setBackgroundText(fld[i][jSelected], tbl[i][jSelected]);
+        }
+        for (int j = 0; j < tbl[0].length; j++) {
+            setBackgroundText(fld[iSelected][j], tbl[iSelected][j]);
+        }
+    }
+
+    private void addSelect() {
+        for (int i = 1; i < tbl.length; i++) {
+            fld[i][jSelected].setBackgroundResource(R.drawable.back_table_selected);
+        }
+        for (int j = 0; j < tbl[0].length; j++) {
+            fld[iSelected][j].setBackgroundResource(R.drawable.back_table_selected);
+        }
+    }
+
+    private void setBackgroundText(TextView textView, TableStruct tableStruct) {
+        switch (tableStruct.getStyle()) {
+            case 1:
+                textView.setBackgroundResource(R.drawable.back_table_was_sended);
+                break;
+            case 2:
+                textView.setBackgroundResource(R.drawable.back_table_done);
+                break;
+            case 3:
+                textView.setBackgroundResource(R.drawable.back_table_need_to_pay);
+                break;
+            case 4:
+                textView.setBackgroundResource(R.drawable.back_table_selected);
+                break;
+            case 5:
+                textView.setBackgroundResource(R.drawable.back_table_head);
+                break;
+            default:
+                textView.setBackgroundResource(R.drawable.back_table);
         }
     }
 }

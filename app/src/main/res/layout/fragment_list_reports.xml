@@ -7,32 +7,195 @@
     android:layout_height="match_parent"
     android:background="@color/dialogStroke">
 
-    <Button
-        android:id="@+id/techniciansButtonList"
-        style="@style/BlackButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/reports_list_technicians"
-        android:textColor="@color/Yellow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/reports_list"
-        android:textAlignment="center"
-        android:textColor="@color/White"
-        android:textSize="@dimen/high_normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/reports_list"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="@dimen/high_normal" />
+
+            <Button
+                android:id="@+id/technicianButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r01"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/paymentButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r02"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/serviceCompanyButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r03"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/facilityButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r04"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/payment1ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r05"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/payment2ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r06"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/payment3ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r07"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/payment4ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r08"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/dept1ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r09"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/dept2ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r10"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/dept3ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r11"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/dept4ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r12"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/dept5ButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r13"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/contractorButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:text="@string/reports_list_r14"
+                android:textColor="@color/Yellow" />
+
+            <Button
+                android:id="@+id/technicianPlanButtonList"
+                style="@style/BlackButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:paddingBottom="3dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/reports_list_r15"
+                android:textColor="@color/Yellow" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
