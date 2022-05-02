@@ -1,6 +1,7 @@
 package romanow.abc.android;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import firefighter.core.reports.R05_08_PaymentReportCommon;
 import firefighter.core.reports.R09_13_DeptReportCommon;
 import firefighter.core.reports.R14_ContractorReport;
 import firefighter.core.reports.R15_TechnicianPlanReport;
+import firefighter.core.utils.OwnDateTime;
 import romanow.abc.android.mapper.MapperToTable;
 import romanow.abc.android.mapper.R01_TechnicianReportMapperImpl;
 import romanow.abc.android.mapper.R02_PaymentReportMapperImpl;
@@ -61,8 +63,8 @@ public class FragmentGenerateReport extends Fragment {
         this.reportType = reportType;
     }
 
-    private long dateMS1 = 160000000L;
-    private long dateMS2 = 0L;
+    private long dateMS1 = 1600000000000L;
+    private long dateMS2 = new Date().getTime();
     private int year = 2022;
 
 
@@ -236,7 +238,6 @@ public class FragmentGenerateReport extends Fragment {
             @Override
             public void onClick(View view) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 
                 switch (reportType) {
                     case TECHNICIANREPORT:
@@ -278,33 +279,33 @@ public class FragmentGenerateReport extends Fragment {
                         break;
                     case PAYMENT1REPORT:
                         try {
-                            Date date = formatYear.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
+                            year = Integer.parseInt(editTextDateStart.getText().toString());
+                        } catch (Exception ignore) {
+
                         }
                         getPayment1Report();
                         break;
                     case PAYMENT2REPORT:
                         try {
-                            Date date = formatYear.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
+                            year = Integer.parseInt(editTextDateStart.getText().toString());
+                        } catch (Exception ignore) {
+
                         }
                         getPayment2Report();
                         break;
                     case PAYMENT3REPORT:
                         try {
-                            Date date = formatYear.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
+                            year = Integer.parseInt(editTextDateStart.getText().toString());
+                        } catch (Exception ignore) {
+
                         }
                         getPayment3Report();
                         break;
                     case PAYMENT4REPORT:
                         try {
-                            Date date = formatYear.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
+                            year = Integer.parseInt(editTextDateStart.getText().toString());
+                        } catch (Exception ignore) {
+
                         }
                         getPayment4Report();
                         break;

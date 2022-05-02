@@ -20,6 +20,7 @@ public class R01_TechnicianReportMapperImpl implements MapperToTable{
         final int WIDTH = 300;
         final int HEIGHT = 100;
         final int HEADHEIGHT = 400;
+        final int STYLEHEAD = 42;
         int i;
         int j;
         WorkSettings ws = null;
@@ -31,9 +32,11 @@ public class R01_TechnicianReportMapperImpl implements MapperToTable{
         for (i = 0; i< dataList.size() + 1; i++) {
             for (j = 0; j < listHeader.size(); j++) {
                 tbl[i][j] = new TableStruct();
+                tbl[i][j].setHeight(HEIGHT);
+                tbl[i][j].setWidth(WIDTH);
             }
         }
-
+        tbl[0][0].setGraph(1);
         try {
             Field field = report.getClass().getDeclaredField("ws");
             field.setAccessible(true);
@@ -47,7 +50,7 @@ public class R01_TechnicianReportMapperImpl implements MapperToTable{
         for (TableCol col : listHeader) {
             tbl[i][j].setHeight(HEADHEIGHT);
             tbl[i][j].setWidth(WIDTH);
-            tbl[i][j].setStyle(5);
+            tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
 
@@ -90,11 +93,6 @@ public class R01_TechnicianReportMapperImpl implements MapperToTable{
             tbl[i][j++].setName(Integer.toString(item.wcrSendToContractor));
             tbl[i][j++].setName(Integer.toString(item.wcrOnSubScribe));
             tbl[i][j++].setName(Integer.toString(item.wcrByTechnician));
-
-            for (j = 0; j < listHeader.size(); j++) {
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
-            }
             i++;
         }
         return tbl;

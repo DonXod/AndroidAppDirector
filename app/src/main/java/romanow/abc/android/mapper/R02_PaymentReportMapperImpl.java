@@ -16,6 +16,7 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         final int WIDTH = 300;
         final int HEIGHT = 130;
         final int HEADHEIGHT = 400;
+        final int STYLEHEAD = 42;
         int dataCols;
         int i;
         int j;
@@ -28,6 +29,8 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         for (i = 0; i< dataList.size()+5; i++) {
             for (j = 0; j < listHeader.size() + dataCols; j++) {
                 tbl[i][j] = new TableStruct();
+                tbl[i][j].setHeight(HEIGHT);
+                tbl[i][j].setWidth(WIDTH);
             }
         }
 
@@ -36,14 +39,14 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         for (TableCol col : listHeader) {
             tbl[i][j].setHeight(HEADHEIGHT);
             tbl[i][j].setWidth(WIDTH);
-            tbl[i][j].setStyle(5);
+            tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
         OwnDateTime cc = new OwnDateTime(report.begin.timeInMS());
         for (int k = 0; k < dataCols; k++) {
             tbl[i][j].setHeight(HEADHEIGHT);
             tbl[i][j].setWidth(WIDTH);
-            tbl[i][j].setStyle(5);
+            tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(cc.monthToString());
             cc.incMonth();
         }
@@ -72,11 +75,6 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
                     tbl[i][j++].setName(Integer.toString(item.pay[j].getSum()));
                 }
             }
-
-            for (j = 0; j < listHeader.size() + dataCols; j++) {
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
-            }
             i++;
         }
 
@@ -87,12 +85,6 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         tbl[dataList.size()+3][1].setStyle(1);
         tbl[dataList.size()+4][1].setName("не выставлено");
         tbl[dataList.size()+4][1].setStyle(3);
-        for (i = dataList.size()+1; i < dataList.size()+5; i++) {
-            for (j = 0; j < listHeader.size() + dataCols; j++) {
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
-            }
-        }
 
         return tbl;
     }

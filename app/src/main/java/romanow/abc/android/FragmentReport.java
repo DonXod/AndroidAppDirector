@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.w3c.dom.Text;
 
@@ -25,6 +26,8 @@ public class FragmentReport extends Fragment {
     private TextView fld[][]=null;
     private int iSelected;
     private int jSelected;
+    private FragmentGraph fragmentGraph;
+    private FragmentTransaction fragmentTransaction;
 
 
     public FragmentReport(TableStruct[][] tableStruct, String title) {
@@ -68,6 +71,20 @@ public class FragmentReport extends Fragment {
             textView.setHeight(tbl[0][j].getHeight());
             textView.setGravity(Gravity.CENTER);
             setBackgroundText(textView, tbl[0][j]);
+            final int jSelect = j;
+            if (tbl[0][j].getGraph() == 1) {
+                item.setClickable(true);
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fragmentGraph = new FragmentGraph(parent, tbl, 0, jSelect, 1);
+                        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
+            }
             list.addView(item);
         }
         table.addView(list);
@@ -137,7 +154,10 @@ public class FragmentReport extends Fragment {
             case 4:
                 textView.setBackgroundResource(R.drawable.back_table_selected);
                 break;
-            case 5:
+            case 7:
+                textView.setBackgroundResource(R.drawable.back_table_brown);
+                break;
+            case 42:
                 textView.setBackgroundResource(R.drawable.back_table_head);
                 break;
             default:

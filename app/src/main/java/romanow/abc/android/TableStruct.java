@@ -5,12 +5,14 @@ public class TableStruct {
     private int style = 0;
     private int height;
     private int width;
+    private int graph = 0;
 
-    public TableStruct(String name, int style, int height, int width) {
+    public TableStruct(String name, int style, int height, int width, int graph) {
         this.name = name;
         this.style = style;
         this.height = height;
         this.width = width;
+        this.graph = graph;
     }
 
     public int getHeight() {
@@ -46,5 +48,13 @@ public class TableStruct {
 
     public void setStyle(int style) {
         this.style = style;
+    }
+
+    public int getGraph() {
+        return graph;
+    }
+
+    public void setGraph(int graph) {
+        this.graph = graph;
     }
 }
