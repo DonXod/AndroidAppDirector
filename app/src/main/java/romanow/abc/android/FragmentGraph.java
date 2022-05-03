@@ -10,9 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.jjoe64.graphview.BarGraphView;
+//import com.jjoe64.graphview.BarGraphView;
+//import com.jjoe64.graphview.GraphView;
+//import com.jjoe64.graphview.GraphViewSeries;
+
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import romanow.abc.android.service.AppData;
 
@@ -23,6 +27,7 @@ public class FragmentGraph extends Fragment {
     private TableStruct[][] tbl;
     private int iSelected;
     private int jSelected;
+    private int type;
 
 
     public FragmentGraph(MainActivity parent, TableStruct[][] tbl, int iSelected, int jSelected, int type) {
@@ -30,6 +35,7 @@ public class FragmentGraph extends Fragment {
         this.tbl = tbl;
         this.iSelected = iSelected;
         this.jSelected = jSelected;
+        this.type = type;
     }
 
     @Nullable
@@ -38,17 +44,22 @@ public class FragmentGraph extends Fragment {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
 
 
-        GraphViewSeries exampleSeries = new GraphViewSeries(
-                new GraphView.GraphViewData[] { new GraphView.GraphViewData(1, 3),
-                        new GraphView.GraphViewData(2, 6), new GraphView.GraphViewData(3, 6),
-                        new GraphView.GraphViewData(4, 5), new GraphView.GraphViewData(5, 1)
-                });
-        GraphView graphView = new BarGraphView(parent,
-                "Число пойманных мышек за неделю");
-        graphView.addSeries(exampleSeries);
 
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.layoutGraph);
-        layout.addView(graphView);
+        GraphView graph = (GraphView) view.findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6)
+        });
+
+
+        graph.addSeries(series);
+        graph.setTitle("Отчёт");
+        graph.setTitleTextSize(100);
+
+
         return view;
     }
 

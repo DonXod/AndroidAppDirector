@@ -40,7 +40,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.yandex.android:maps.mobile:4.0.0-lite'
     //implementation fileTree(dir: 'libs', include: ['*.jar'], exclude: [])
-    implementation files('libs\\GraphView-3.1.4.jar')
+    implementation 'com.jjoe64:graphview:4.2.2'
+    //implementation files('libs\\GraphView-3.1.4.jar')
     implementation files('libs\\firefightercore.jar')
     //implementation files('libs\\ABCCore.jar')
     // https://mvnrepository.com/artifact/javax.mail/javax.mail-api

@@ -7,4 +7,8 @@
     android:padding="3dp"
     android:background="@color/White">
 
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/graph" />
 </LinearLayout>

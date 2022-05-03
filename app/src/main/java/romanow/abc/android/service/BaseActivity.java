@@ -19,8 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
+//import com.jjoe64.graphview.GraphViewSeries;
+//import com.jjoe64.graphview.LineGraphView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
     public final static int EmoErr = 0x1F4A3;
     public Thread guiThread;
     private AppData ctx;
-    private LineGraphView multiGraph=null;
+    //private LineGraphView multiGraph=null;
     private boolean fullInfo=false;             // Вывод полной информации о спектре
     public final static int greatTextSize=20;   // Крупный шрифт
     public final static int middleTextSize=16;
@@ -129,18 +129,18 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
         return color;
         }
     public void paintOne(double data[], int color){
-        paintOne(multiGraph,0,data,color,0,0,false);
+//        paintOne(multiGraph,0,data,color,0,0,false);
         }
-    public void paintOne(LineGraphView graphView, double freq, double data[], int color, int noFirst, int noLast, boolean freqMode){
-        GraphView.GraphViewData zz[] = new GraphView.GraphViewData[data.length-noFirst-noLast];
-        for(int j=noFirst;j<data.length-noLast;j++){                    // Подпись значений факторов j-ой ячейки
-            double cfreq = freqMode ? (j*freq/data.length/2) : (j/100.);
-            zz[j-noFirst] = new GraphView.GraphViewData(cfreq,data[j]);
-            }
-        GraphViewSeries series = new GraphViewSeries(zz);
-        series.getStyle().color = color | 0xFF000000;
-        graphView.addSeries(series);
-        }
+//    public void paintOne(LineGraphView graphView, double freq, double data[], int color, int noFirst, int noLast, boolean freqMode){
+//        GraphView.GraphViewData zz[] = new GraphView.GraphViewData[data.length-noFirst-noLast];
+//        for(int j=noFirst;j<data.length-noLast;j++){                    // Подпись значений факторов j-ой ячейки
+//            double cfreq = freqMode ? (j*freq/data.length/2) : (j/100.);
+//            zz[j-noFirst] = new GraphView.GraphViewData(cfreq,data[j]);
+//            }
+//        GraphViewSeries series = new GraphViewSeries(zz);
+//        series.getStyle().color = color | 0xFF000000;
+//        graphView.addSeries(series);
+//        }
     public LinearLayout createMultiGraph(int resId,double procHigh){
         LinearLayout lrr=(LinearLayout)getLayoutInflater().inflate(resId, null);
         LinearLayout panel = (LinearLayout)lrr.findViewById(R.id.viewPanel);
@@ -149,16 +149,16 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
             params.height = (int)(getResources().getDisplayMetrics().widthPixels*procHigh);
             panel.setLayoutParams(params);
             }
-        multiGraph = new LineGraphView(this,"");
-        multiGraph.setScalable(true);
-        multiGraph.setScrollable(true);
-        multiGraph.getGraphViewStyle().setTextSize(15);
-        panel.addView(multiGraph);
+//        multiGraph = new LineGraphView(this,"");
+//        multiGraph.setScalable(true);
+//        multiGraph.setScrollable(true);
+//        multiGraph.getGraphViewStyle().setTextSize(15);
+//        panel.addView(multiGraph);
         return lrr;
         }
-    public LineGraphView getMultiGraph() {
-        return multiGraph;
-        }
+//    public LineGraphView getMultiGraph() {
+//        return multiGraph;
+//        }
     //-----------------------------------------------------------------------------------------------------
     public void procArchive(FileDescription fd){
         String fname = fd.getOriginalFileName();
