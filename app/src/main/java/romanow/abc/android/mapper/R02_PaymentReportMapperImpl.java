@@ -42,6 +42,10 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
+
+        tbl[0][3].setGraph(1);
+        tbl[0][3].setIndexName(0);
+
         OwnDateTime dd = new OwnDateTime(report.begin.timeInMS());
         dd.incMonth();
         OwnDateTime cc = new OwnDateTime(dd.timeInMS());
@@ -61,22 +65,26 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
             tbl[i][j++].setName(Integer.toString(i));
             tbl[i][j++].setName(item.name);
             if (item.sumContract.getSum()!=0) {
+                tbl[i][j].setValue(item.sumContract.getSum() / 100L);
                 tbl[i][j++].setName(item.sumContract.getSum() / 100 + "." + item.sumContract.getSum() % 100 + "р.");
             } else {
                 tbl[i][j++].setName("0.0р.");
             }
             if (item.sumToSend.getSum()!=0) {
+                tbl[i][j].setValue(item.sumToSend.getSum() / 100L);
                 tbl[i][j++].setName(item.sumToSend.getSum() / 100 + "." + item.sumToSend.getSum() % 100 + "р.");
             } else {
                 tbl[i][j++].setName("0.0р.");
             }
             if (item.sumWasPay.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(item.sumWasPay.getSum()));
+                tbl[i][j].setValue(item.sumWasPay.getSum() / 100L);
+                tbl[i][j++].setName(item.sumWasPay.getSum() / 100 + "." + item.sumWasPay.getSum() % 100 + "р.");
             } else {
                 tbl[i][j++].setName("0.0р.");
             }
             if (item.dept.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(item.dept.getSum()));
+                tbl[i][j].setValue(item.dept.getSum() / 100L);
+                tbl[i][j++].setName(item.dept.getSum() / 100 + "." + item.dept.getSum() % 100 + "р.");
             } else {
                 tbl[i][j++].setName("0.0р.");
             }

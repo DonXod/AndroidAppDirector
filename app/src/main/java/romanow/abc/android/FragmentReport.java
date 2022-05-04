@@ -77,7 +77,14 @@ public class FragmentReport extends Fragment {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fragmentGraph = new FragmentGraph(parent, tbl, 0, jSelect, 1);
+                        String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
+                        Long[] tblTemp = new Long[6];
+                        String[] names = new String[6];
+                        for (int i = 0; i < 6; i++) {
+                            tblTemp[i] = tbl[i + 1][jSelect].getValue();
+                            names[i] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
+                        }
+                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title);
                         fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
                         fragmentTransaction.addToBackStack(null);
