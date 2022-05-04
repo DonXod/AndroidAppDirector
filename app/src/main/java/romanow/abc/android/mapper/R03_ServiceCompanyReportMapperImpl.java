@@ -14,7 +14,7 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
         final int WIDTH = 300;
-        final int HEIGHT = 130;
+        final int HEIGHT = 200;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         int i;
@@ -46,7 +46,7 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
         for (ServiceCompanyItem item: dataList) {
             j = 0;
 
-            tbl[i][j++].setName(i==dataList.size() ? "" : ""+(i+1));
+            tbl[i][j++].setName(i==dataList.size() ? "" : ""+(i));
             tbl[i][j++].setName(item.company.getTitle());
             tbl[i][j++].setName(Integer.toString(item.contractCount));
             tbl[i][j++].setName(Integer.toString(item.contractSum.getSum()));

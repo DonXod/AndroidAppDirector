@@ -161,7 +161,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/White"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
 
         </LinearLayout>
     </ScrollView>

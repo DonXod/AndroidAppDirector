@@ -14,7 +14,7 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
         final int WIDTH = 300;
-        final int HEIGHT = 130;
+        final int HEIGHT = 200;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         int dataCols;
@@ -24,7 +24,7 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         R02_PaymentReport report = (R02_PaymentReport) object;
         ArrayList<PaymentReportItem> dataList = report.data;
         ArrayList<TableCol> listHeader = report.createHeader();
-        dataCols=report.end.monthDifference(report.begin)+1;
+        dataCols=report.end.monthDifference(report.begin);
         TableStruct[][] tbl = new TableStruct[dataList.size()+5][listHeader.size() + dataCols];
         for (i = 0; i< dataList.size()+5; i++) {
             for (j = 0; j < listHeader.size() + dataCols; j++) {
@@ -51,6 +51,7 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
             cc.incMonth();
         }
 
+
         i = 1;
         for (PaymentReportItem item: dataList) {
             j = 0;
@@ -58,21 +59,33 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
             tbl[i][j++].setName(Integer.toString(i));
             tbl[i][j++].setName(item.name);
             if (item.sumContract.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(item.sumContract.getSum()));
+                tbl[i][j++].setName(item.sumContract.getSum() / 100 + "." + item.sumContract.getSum() % 100 + "р.");
+            } else {
+                tbl[i][j++].setName("0.0р.");
             }
             if (item.sumToSend.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(item.sumToSend.getSum()));
+                tbl[i][j++].setName(item.sumToSend.getSum() / 100 + "." + item.sumToSend.getSum() % 100 + "р.");
+            } else {
+                tbl[i][j++].setName("0.0р.");
             }
             if (item.sumWasPay.getSum()!=0) {
                 tbl[i][j++].setName(Integer.toString(item.sumWasPay.getSum()));
+            } else {
+                tbl[i][j++].setName("0.0р.");
             }
             if (item.dept.getSum()!=0) {
                 tbl[i][j++].setName(Integer.toString(item.dept.getSum()));
+            } else {
+                tbl[i][j++].setName("0.0р.");
             }
-            for(int k = 0; j < dataCols; k++) {
-                tbl[i][j].setStyle(item.states[k]);
+            for(int k = 1; k < dataCols + 1; k++) {
+                tbl[i][j].setStyle(item.states[k] == 1 ? 3 :
+                        item.states[k] == 2 ? 1 :
+                        item.states[k] == 3 ? 2 : 0);
                 if (item.pay[k].getSum()!=0) {
-                    tbl[i][j++].setName(Integer.toString(item.pay[j].getSum()));
+                    tbl[i][j++].setName(item.pay[k].getSum() / 100 + "." + item.pay[k].getSum() % 100 +"р.");
+                } else {
+                    tbl[i][j++].setName("0.0р.");
                 }
             }
             i++;

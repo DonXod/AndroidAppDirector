@@ -426,7 +426,11 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getPaymentReport(){
-
+        ctx.toLog(false, dateMS1+" первое");
+        ctx.toLog(false, dateMS2+" второе");
+        OwnDateTime temp = new OwnDateTime(dateMS2);
+        temp.incMonth();
+        dateMS2 = temp.timeInMS();
         new NetCall<R02_PaymentReport>().call(parent, ctx.getService().createPaymentReport(sessionToken, 0,  dateMS1, dateMS2, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {
