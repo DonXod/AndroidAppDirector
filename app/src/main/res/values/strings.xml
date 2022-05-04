@@ -27,4 +27,5 @@
     <string name="reports_button_generate">Получить отчёт</string>
     <string name="date_start">Дата начала отчёта</string>
     <string name="date_end">Дата окончания отчёта</string>
+    <string name="generate_graph">Создать график</string>
 </resources>

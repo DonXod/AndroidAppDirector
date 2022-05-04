@@ -17,6 +17,7 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         final int HEIGHT = 200;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
+        final int STYLEHEADGIST = 43;
         int dataCols;
         int i;
         int j;
@@ -43,8 +44,14 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
             tbl[i][j++].setName(col.getName());
         }
 
+        //-------------------------------Гистограммы-------------------------
+        tbl[0][2].setGraph(1);
+        tbl[0][2].setIndexName(0);
+        tbl[0][2].setStyle(STYLEHEADGIST);
         tbl[0][3].setGraph(1);
         tbl[0][3].setIndexName(0);
+        tbl[0][3].setStyle(STYLEHEADGIST);
+        //----------------------------------------------------------------
 
         OwnDateTime dd = new OwnDateTime(report.begin.timeInMS());
         dd.incMonth();

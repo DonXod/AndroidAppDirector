@@ -15,6 +15,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import romanow.abc.android.service.AppData;
 
 public class FragmentReport extends Fragment {
@@ -28,6 +32,7 @@ public class FragmentReport extends Fragment {
     private int jSelected;
     private FragmentGraph fragmentGraph;
     private FragmentTransaction fragmentTransaction;
+    private ArrayList<Integer> listIndex = new ArrayList<>();
 
 
     public FragmentReport(TableStruct[][] tableStruct, String title) {
@@ -77,18 +82,64 @@ public class FragmentReport extends Fragment {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
-                        Long[] tblTemp = new Long[6];
-                        String[] names = new String[6];
-                        for (int i = 0; i < 6; i++) {
-                            tblTemp[i] = tbl[i + 1][jSelect].getValue();
-                            names[i] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
-                        }
-                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title);
-                        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                        int ind = tbl[0][jSelect].getIndexName();
+                        int selectedCount = 0;
+                        ArrayList<String> list = (ArrayList<String>) Arrays.stream(tbl)
+                                .skip(1)
+                                .map(e -> "№ п/п " + Arrays.stream(e)
+                                        .skip(ind)
+                                        .map(ee -> ee.getName())
+                                        .findFirst()
+                                        .get())
+                                .collect(Collectors.toList());
+                        new MultiListBoxDialogGraph(parent, "Параметры для гистограммы", list, new MultiListBoxListener() {
+                            @Override
+                            public void onSelect(boolean[] selected) {
+                                listIndex.clear();
+                                for (int i = 0; i < selected.length; i++) {
+                                    if (selected[i])listIndex.add(i);
+                                }
+                            }
+                        }, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
+                                Long[] tblTemp = new Long[listIndex.size()];
+                                String[] names = new String[listIndex.size()];
+                                int l = 0;
+                                for (int i : listIndex) {
+                                    tblTemp[l] = tbl[i + 1][jSelect].getValue();
+                                    names[l++] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
+                                }
+                                fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title);
+                                fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+                            }
+                        }, 6);
+
+//                        new MultiListBoxDialog(parent,
+//                                "Выберите данные для гистограммы",
+//                                list
+//                                , new MultiListBoxListener() {
+//                            @Override
+//                            public void onSelect(boolean[] selected) {
+//                                ctx.toLog(false,"ура");
+//                            }
+//                        });
+//                        String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
+//                        Long[] tblTemp = new Long[6];
+//                        String[] names = new String[6];
+//                        for (int i = 0; i < 6; i++) {
+//                            tblTemp[i] = tbl[i + 1][jSelect].getValue();
+//                            names[i] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
+//                        }
+//                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title);
+//                        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
+//                        fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
+//                        fragmentTransaction.addToBackStack(null);
+//                        fragmentTransaction.commit();
                     }
                 });
             }
@@ -166,6 +217,9 @@ public class FragmentReport extends Fragment {
                 break;
             case 42:
                 textView.setBackgroundResource(R.drawable.back_table_head);
+                break;
+            case 43:
+                textView.setBackgroundResource(R.drawable.back_table_head_gist);
                 break;
             default:
                 textView.setBackgroundResource(R.drawable.back_table);
