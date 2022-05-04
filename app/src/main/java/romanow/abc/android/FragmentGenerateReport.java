@@ -63,9 +63,9 @@ public class FragmentGenerateReport extends Fragment {
         this.reportType = reportType;
     }
 
-    private long dateMS1 = 1600000000000L;
-    private long dateMS2 = new Date().getTime();
-    private int year = 2022;
+    private long dateMS1 = 1609459200000L;
+    private long dateMS2 = 1622332800000L;
+    private int year = 2021;
 
 
     @Nullable
@@ -426,11 +426,10 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getPaymentReport(){
-        ctx.toLog(false, dateMS1+" первое");
-        ctx.toLog(false, dateMS2+" второе");
-        OwnDateTime temp = new OwnDateTime(dateMS2);
-        temp.incMonth();
-        dateMS2 = temp.timeInMS();
+
+        OwnDateTime temp = new OwnDateTime(dateMS1);
+        temp.decMonth();
+        dateMS1 = temp.timeInMS();
         new NetCall<R02_PaymentReport>().call(parent, ctx.getService().createPaymentReport(sessionToken, 0,  dateMS1, dateMS2, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {
@@ -612,7 +611,9 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getDept1Report(){
-
+        OwnDateTime temp = new OwnDateTime(dateMS1);
+        temp.decMonth();
+        dateMS1 = temp.timeInMS();
         new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createDeptContractorReport(sessionToken, 0,  dateMS1, dateMS2, false, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {
@@ -638,7 +639,9 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getDept2Report(){
-
+        OwnDateTime temp = new OwnDateTime(dateMS1);
+        temp.decMonth();
+        dateMS1 = temp.timeInMS();
         new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createDeptTechnicianReport(sessionToken, dateMS1, dateMS2, false, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {
@@ -664,7 +667,9 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getDept3Report(){
-
+        OwnDateTime temp = new OwnDateTime(dateMS1);
+        temp.decMonth();
+        dateMS1 = temp.timeInMS();
         new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createDeptServiceReport(sessionToken, dateMS1, dateMS2, false, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {
@@ -690,7 +695,9 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getDept4Report(){
-
+        OwnDateTime temp = new OwnDateTime(dateMS1);
+        temp.decMonth();
+        dateMS1 = temp.timeInMS();
         new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createContractContractorReport(sessionToken, dateMS1, dateMS2, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {
@@ -716,7 +723,9 @@ public class FragmentGenerateReport extends Fragment {
     }
 
     private void getDept5Report(){
-
+        OwnDateTime temp = new OwnDateTime(dateMS1);
+        temp.decMonth();
+        dateMS1 = temp.timeInMS();
         new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createContractServiceReport(sessionToken, dateMS1, dateMS2, 0), new NetBack() {
             @Override
             public void onError(int code, String mes) {

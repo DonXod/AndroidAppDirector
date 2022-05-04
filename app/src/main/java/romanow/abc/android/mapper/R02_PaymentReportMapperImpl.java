@@ -42,7 +42,9 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
-        OwnDateTime cc = new OwnDateTime(report.begin.timeInMS());
+        OwnDateTime dd = new OwnDateTime(report.begin.timeInMS());
+        dd.incMonth();
+        OwnDateTime cc = new OwnDateTime(dd.timeInMS());
         for (int k = 0; k < dataCols; k++) {
             tbl[i][j].setHeight(HEADHEIGHT);
             tbl[i][j].setWidth(WIDTH);

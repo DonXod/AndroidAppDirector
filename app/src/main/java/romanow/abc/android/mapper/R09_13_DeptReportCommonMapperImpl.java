@@ -1,6 +1,8 @@
 package romanow.abc.android.mapper;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import firefighter.core.entity.subjectarea.Contractor;
 import firefighter.core.entity.subjectarea.Facility;
@@ -8,6 +10,7 @@ import firefighter.core.reports.R04_FacilityReport;
 import firefighter.core.reports.R09_13_DeptReportCommon;
 import firefighter.core.reports.SumMapEntity;
 import firefighter.core.reports.SumMapMonth;
+import firefighter.core.reports.SumMonthValue;
 import firefighter.core.reports.TableCol;
 import firefighter.core.utils.OwnDateTime;
 import romanow.abc.android.TableStruct;
@@ -18,7 +21,7 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
         final int WIDTH = 300;
-        final int HEIGHT = 130;
+        final int HEIGHT = 210;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         int i;
@@ -26,10 +29,13 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
 
         R09_13_DeptReportCommon report = (R09_13_DeptReportCommon) object;
         SumMapEntity data = report.data;
+        OwnDateTime dd = new OwnDateTime(report.firstMonth.timeInMS());
+        dd.incMonth();
+        report.firstMonth = dd;
         ArrayList<TableCol> listHeader = report.createHeader();
-        TableStruct[][] tbl = new TableStruct[data.size() + 2][listHeader.size()];
+        TableStruct[][] tbl = new TableStruct[data.size() + 2][listHeader.size() - 1];
         for (i = 0; i< data.size() + 2; i++) {
-            for (j = 0; j < listHeader.size(); j++) {
+            for (j = 0; j < listHeader.size() - 1; j++) {
                 tbl[i][j] = new TableStruct();
                 tbl[i][j].setHeight(HEIGHT);
                 tbl[i][j].setWidth(WIDTH);
@@ -38,46 +44,58 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
 
         i = 0;
         j = 0;
-        for (TableCol col : listHeader) {
+        for (int k = 0; k < listHeader.size() - 1; k++) {
+            TableCol col = listHeader.get(k);
             tbl[i][j].setHeight(HEADHEIGHT);
             tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
 
-        int sums[] = new int[report.nMonth];
-        for (i = 0; i < report.nMonth; i++) {
+        int sums[] = new int[report.nMonth - 1];
+        for (i = 0; i < report.nMonth - 1; i++) {
             sums[i] = 0;
         }
 
         for (i = 1; i < data.size() + 1; i++) {
             j = 0;
-            ctx.toLog(false, i+" строка");
-            ctx.toLog(false, data.size() + 1+" макс индекс");
-            ctx.toLog(false, listHeader.size() - 1+" макс индекс");
 
             SumMapMonth item = data.getData().get(i-1);
-            ctx.toLog(false, j+" индекс записи");
             tbl[i][j++].setName(Integer.toString(i));
-            tbl[i][j++].setName(item.getEntity().getTitle());
+            tbl[i][j++].setName(item.getTitle());
             OwnDateTime xx = new OwnDateTime(report.firstMonth.timeInMS());
-            for (int k = 0; k < report.nMonth; k++) {
-                int sum = item.getSum(xx.year(), xx.month());
-                sums[k] += sum;
-                if (sum!=0) {
-                    tbl[i][j++].setName(Integer.toString(sum));
+            for (int k = 0; k < report.nMonth - 1; k++) {
+                if (item.getData().stream().filter(e -> e.year == xx.year() && e.month == xx.month()).count() == 0 ) {
+                    tbl[i][j++].setName("0.0р.");
                 } else {
-                    j++;
+                    SumMonthValue sumMonthValue = item.getData().stream().filter(e -> e.year == xx.year() && e.month == xx.month()).collect(Collectors.toList()).get(0);
+                    tbl[i][j++].setName(sumMonthValue.getSum() / 100 + "." + sumMonthValue.getSum() % 100 + "р.");
+                    sums[k] += sumMonthValue.getSum();
                 }
                 xx.incMonth();
             }
+
+//            OwnDateTime xx = new OwnDateTime(report.firstMonth.timeInMS());
+//            for (int k = 0; k < report.nMonth; k++) {
+//                int sum = item.getSum(xx.year(), xx.month());
+//                sums[k] += sum;
+//                if (sum!=0) {
+//                    tbl[i][j++].setName(Integer.toString(sum));
+//                } else {
+//                    j++;
+//                }
+//                xx.incMonth();
+//            }
         }
 
         int sz = data.size()+1;
         tbl[sz][1].setName("Итого");
-        for (j = 0; j < report.nMonth; j++) {
-            if (sums[j]!=0)
-                tbl[sz][j+2].setName(Integer.toString(sums[j]));
+        for (j = 0; j < report.nMonth - 1; j++) {
+            if (sums[j]!=0) {
+                tbl[sz][j + 2].setName(sums[j] / 100 + "." + sums[j] % 100 + "р.");
+            } else {
+                tbl[sz][j + 2].setName("0.0р.");
+            }
         }
 
         return tbl;
