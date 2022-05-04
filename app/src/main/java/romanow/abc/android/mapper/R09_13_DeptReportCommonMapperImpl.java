@@ -50,9 +50,14 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
             sums[i] = 0;
         }
 
-        for (i = 1; i < data.size(); i++) {
+        for (i = 1; i < data.size() + 1; i++) {
             j = 0;
+            ctx.toLog(false, i+" строка");
+            ctx.toLog(false, data.size() + 1+" макс индекс");
+            ctx.toLog(false, listHeader.size() - 1+" макс индекс");
+
             SumMapMonth item = data.getData().get(i-1);
+            ctx.toLog(false, j+" индекс записи");
             tbl[i][j++].setName(Integer.toString(i));
             tbl[i][j++].setName(item.getEntity().getTitle());
             OwnDateTime xx = new OwnDateTime(report.firstMonth.timeInMS());

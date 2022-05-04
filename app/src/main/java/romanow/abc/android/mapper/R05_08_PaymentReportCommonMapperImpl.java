@@ -2,8 +2,12 @@ package romanow.abc.android.mapper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import firefighter.core.constants.Values;
+import firefighter.core.entity.subjectarea.Contractor;
 import firefighter.core.entity.subjectarea.Facility;
 import firefighter.core.entity.subjectarea.PaymentItem;
 import firefighter.core.entity.subjectarea.WorkSettings;
@@ -23,7 +27,7 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
         final int WIDTH = 300;
-        final int HEIGHT = 130;
+        final int HEIGHT = 200;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         I_ReportParams params = null;
@@ -57,9 +61,18 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
+        if (report.reportType == 12) {
+            tbl[0][2].setName("Контрагент");
+        }
+        if (report.reportType == 13) {
+            tbl[0][2].setName("Название");
+        }
+        if (report.reportType == 14 || report.reportType == 15) {
+            tbl[0][2].setName("Договоры");
+        }
 
-        int sums[] = new int[17];
-        for (i = 0; i < 17; i++) {
+        int sums[] = new int[20];
+        for (i = 0; i < 20; i++) {
             sums[i] = 0;
         }
         int commonDepts=0;
@@ -67,110 +80,57 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
         int commonPlans=0;
         int commonManual=0;
 
-        for (i = 1; i < report.pays.size() + 1; i++, j = 0) {
-            CalcMapYear item = report.pays.getData().get(i);
+        for (i = 1; i < report.pays.size() + 1; i++) {
+            j = 0;
+
+            CalcMapYear item = report.pays.getData().get(i-1);
             CalcMapYear item2 = report.depts.get(item.getId());
 
             tbl[i][j++].setName(Integer.toString(i));
-            tbl[i][j++].setName(item.getEntity().getTitle());
-            if (params!=null) {
-                Object oo = params.getName2(item);
-                if (oo instanceof String)
-                    tbl[i][j++].setName((String)oo );
-                else
-                    tbl[i][j++].setName(Integer.toString(((MoneySum)oo).getSum()));
-            }
-            if (item2!=null) {
-                CalcMapMonth hh = item2.get(report.year-1);
-                if (hh!=null){
-                    tbl[i][j++].setName(Integer.toString(hh.getSumWasSend()));
-                    sums[0]+=hh.getSumWasSend();
-                } else {
-                    tbl[i][j++].setName("");
-                }
+            tbl[i][j++].setName(item.getTitle());
+            if(report.reportType == 12 || report.reportType == 13) {
+                tbl[i][j++].setName(item.getData().get(0).getData().get(0).get(0).getByContractor().getRef() == null ? "" : item.getData().get(0).getData().get(0).get(0).getByContractor().getRef().getName());
             } else {
-                tbl[i][j++].setName("");
+                tbl[i][j++].setName(item.getOwnMoney()+"");
             }
-            int val = item.get(report.year).getSumNeedTo();
-            MoneySum vv = new MoneySum(item.get(report.year).getSumNeedTo());
-            report.sumContract.add(vv);
-            if (vv.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(vv.getSum()));
-            } else {
-                tbl[i][j++].setName("");
-            }
-            sums[1]+=vv.getSum();
-            MoneySum vv2 = new MoneySum(item.get(report.year).getSumWasSend());
-            report.sumContract.add(vv2);
-            report.sumToSend.add(vv2);
-            if (vv2.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(vv2.getSum()));
-            } else {
-                tbl[i][j++].setName("");
-            }
-            sums[2]+=vv2.getSum();
-            MoneySum vv3 = new MoneySum(item.get(report.year).getSumDone());
-            report.sumContract.add(vv3);
-            report.sumWasPay.add(vv3);
-            if (vv3.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(vv3.getSum()));
-            } else {
-                tbl[i][j++].setName("");
-            }
-            sums[3]+=vv3.getSum();
-            vv.add(vv2);
-            vv.add(vv3);
-            if (vv.getSum()!=0) {
-                tbl[i][j++].setName(Integer.toString(vv.getSum()));
-            } else {
-                tbl[i][j++].setName("");
-            }
-            sums[4]+=vv.getSum();
-            CalcMapMonth zz = item.get(report.year);
-
-            for(int k=0;k<12;k++){         // Цвет по состоянию
-                ArrayList<PaymentItem> list =zz.get(k+1);
-                if (list==null || list.size()==0)
-                    continue;
-                PaymentItem pp = list.get(0);
-                int sum = 0;
-                int state=pp.getPaymentState();
-                boolean mix=false;              // Смешанные состояния
-                boolean manual=false;
-                for(PaymentItem dd : list){
-                    int ss = dd.getCurrentPay().getSum();
-                    sum += ss;
-                    sums[5+k]+=ss;
-                    if (dd.getPaymentState()!=state)
-                        mix=true;
-                    int dstate = dd.getPaymentState();
-                    if (dstate== Values.PIDone)
-                        commonDepts++;
-                    if (dstate==Values.PINeedToPay)
-                        commonPlans++;
-                    if (dstate==Values.PIWasSended)
-                        commonSets++;
-                    if (dd.isManual()){
-                        commonManual++;
-                        manual=true;
+            sums[j] += 0;
+            tbl[i][j++].setName("0.0р.");
+            sums[j] += item.getData().get(0).getSumNeedTo();
+            tbl[i][j++].setName(item.getData().get(0).getSumNeedTo() / 100+"." + item.getData().get(0).getSumNeedTo() % 100 + "р.");
+            sums[j] += item.getData().get(0).getSumWasSend();
+            tbl[i][j++].setName(item.getData().get(0).getSumWasSend() / 100 + "." + item.getData().get(0).getSumWasSend() % 100 + "р.");
+            sums[j] += item.getData().get(0).getSumDone();
+            tbl[i][j++].setName(item.getData().get(0).getSumDone() / 100 + "." + item.getData().get(0).getSumDone() % 100 + "р.");
+            sums[j] += item.getData().get(0).getSumNeedTo() + item.getData().get(0).getSumWasSend() + item.getData().get(0).getSumDone();
+            tbl[i][j++].setName((item.getData().get(0).getSumNeedTo() + item.getData().get(0).getSumWasSend() + item.getData().get(0).getSumDone()) / 100 +
+                    "." + (item.getData().get(0).getSumNeedTo() + item.getData().get(0).getSumWasSend() + item.getData().get(0).getSumDone()) % 100 + "р.");
+            final int iFin = i;
+            final int jFin = j;
+                item.getData().get(0).getData().stream().forEach(e -> {
+                    long sum = 0L;
+                    List<Long> list = e.stream().map(ee -> Long.parseLong(ee.getCurrentPay().getSum()+"")).collect(Collectors.toList());
+                    for (Long l: list) {
+                        sum += l;
                     }
-
-                }
-                int size = list.size();
-                if (size!=0){
-                    tbl[i][j].setStyle(mix ? Values.ColorBrown : Values.PIStateColors[pp.getPaymentState()]);
-                    tbl[i][j].setName(Integer.toString(sum));
-                }
-            }
-            i++;
+                    sums[e.get(0).getMaintenances().get(0).getRef().getReglamentMonth() == 12 ? jFin : jFin + e.get(0).getMaintenances().get(0).getRef().getReglamentMonth()] +=
+                            sum;
+                    tbl[iFin][e.get(0).getMaintenances().get(0).getRef().getReglamentMonth() == 12 ? jFin : jFin + e.get(0).getMaintenances().get(0).getRef().getReglamentMonth()]
+                            .setName( sum/100 + "." + sum % 100 + "р.");
+                    tbl[iFin][e.get(0).getMaintenances().get(0).getRef().getReglamentMonth() == 12 ? jFin : jFin + e.get(0).getMaintenances().get(0).getRef().getReglamentMonth()]
+                            .setStyle(e.get(0).getMaintenances().get(0).getRef().getPaymentState() == 1 ? 3 :
+                                    e.get(0).getMaintenances().get(0).getRef().getPaymentState() == 2 ? 1 :
+                                    e.get(0).getMaintenances().get(0).getRef().getPaymentState() == 3 ? 2 : 7);
+                });
         }
 
         int sz = report.pays.size()+1;
         tbl[sz][1].setName("Итого");
-        for (j = 0; j < 17; j++) {
-            if(sums[j]!=0)
-                tbl[sz + 1][j].setName(Integer.toString(sums[j]));
+        for (j = 0; j < 20; j++) {
+            if(sums[j]!=0) {
+                tbl[sz][j].setName(sums[j] / 100 + "." + sums[j] % 100 + "р.");
+            }
         }
+        tbl[sz][7].setName("-");
         tbl[sz+1][1].setName("Цветовые обозначения:");
         tbl[sz+2][1].setName("оплачено");
         tbl[sz+3][1].setName("выставлено");

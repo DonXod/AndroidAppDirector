@@ -36,7 +36,7 @@ public class R01_TechnicianReportMapperImpl implements MapperToTable{
                 tbl[i][j].setWidth(WIDTH);
             }
         }
-        tbl[0][0].setGraph(1);
+
         try {
             Field field = report.getClass().getDeclaredField("ws");
             field.setAccessible(true);
