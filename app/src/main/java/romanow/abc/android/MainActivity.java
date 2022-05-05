@@ -99,6 +99,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     private EmptyFragment emptyFragment;
     private FragmentTransaction fragmentTransaction;
     private ProgressBarDialog progressBarDialog;
+    private Button headerRenderMenu;
     //--------------------------------------------------------------------------
     private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
         @Override
@@ -239,6 +240,15 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             log = (LinearLayout) findViewById(R.id.log);
             scroll = (ScrollView) findViewById(R.id.scroll);
             NETState = (ImageView) findViewById(R.id.headerNet);
+            headerRenderMenu = (Button) findViewById(R.id.headerRenderMenu);
+            headerRenderMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.layoutMain, emptyFragment);
+                    fragmentTransaction.commit();
+                }
+            });
             fragmentListReports = new FragmentListReports();
             emptyFragment = new EmptyFragment();
             progressBarDialog = new ProgressBarDialog();

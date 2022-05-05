@@ -280,7 +280,6 @@ public class FragmentGenerateReport extends Fragment {
                     case FACILITYREPORT:
                         parent.showDialogProgressBar();
                         getFacilityReport();
-                        parent.hideDialogProgressBar();
                         break;
                     case PAYMENT1REPORT:
                         parent.showDialogProgressBar();

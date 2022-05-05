@@ -28,4 +28,5 @@
     <string name="date_start">Дата начала отчёта</string>
     <string name="date_end">Дата окончания отчёта</string>
     <string name="generate_graph">Создать график</string>
+    <string name="button_main">Главная страница</string>
 </resources>

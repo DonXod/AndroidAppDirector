@@ -14,7 +14,7 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
         final int WIDTH = 300;
-        final int HEIGHT = 200;
+        final int HEIGHT = 250;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         final int STYLEHEADGIST = 43;

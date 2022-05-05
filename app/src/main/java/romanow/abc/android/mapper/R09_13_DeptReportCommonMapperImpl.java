@@ -21,7 +21,7 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
         final int WIDTH = 300;
-        final int HEIGHT = 210;
+        final int HEIGHT = 250;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         int i;
