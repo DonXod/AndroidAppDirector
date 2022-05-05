@@ -17,6 +17,7 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
         final int HEIGHT = 200;
         final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
+        final int STYLEHEADGIST = 43;
         int i;
         int j;
 
@@ -42,14 +43,29 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
             tbl[i][j++].setName(col.getName());
         }
 
+        //-------------------------------Гистограммы-------------------------
+        tbl[0][2].setGraph(1);
+        tbl[0][2].setIndexName(0);
+        tbl[0][2].setStyle(STYLEHEADGIST);
+        tbl[0][2].setDataSize(dataList.size() - 1);
+        tbl[0][2].setLabelY("шт.");
+        tbl[0][3].setGraph(1);
+        tbl[0][3].setIndexName(0);
+        tbl[0][3].setStyle(STYLEHEADGIST);
+        tbl[0][3].setDataSize(dataList.size() - 1);
+        tbl[0][3].setLabelY("р.");
+        //----------------------------------------------------------------
+
         i = 1;
         for (ServiceCompanyItem item: dataList) {
             j = 0;
 
             tbl[i][j++].setName(i==dataList.size() ? "" : ""+(i));
             tbl[i][j++].setName(item.company.getTitle());
-            tbl[i][j++].setName(Integer.toString(item.contractCount));
-            tbl[i][j++].setName(Integer.toString(item.contractSum.getSum()));
+            tbl[i][j].setValue((long) item.contractCount);
+            tbl[i][j++].setName(item.contractCount+" шт.");
+            tbl[i][j].setValue(item.contractSum.getSum() / 100L);
+            tbl[i][j++].setName(item.contractSum.getSum() / 100 + "." + item.contractSum.getSum() % 100 +"р.");
             i++;
         }
 

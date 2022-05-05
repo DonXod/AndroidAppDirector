@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,7 +85,6 @@ public class FragmentGenerateReport extends Fragment {
         editTextDateEnd = (EditText) view.findViewById(R.id.editTextDateEnd);
         textViewDateStart = (TextView) view.findViewById(R.id.textViewDateStart);
         textViewDateEnd = (TextView) view.findViewById(R.id.textViewDateEnd);
-
         // формат editText
         TextWatcher tw1 = new TextWatcher() {
             private String current = "";
@@ -241,6 +241,7 @@ public class FragmentGenerateReport extends Fragment {
 
                 switch (reportType) {
                     case TECHNICIANREPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -254,6 +255,7 @@ public class FragmentGenerateReport extends Fragment {
                         getTechnicianReport();
                         break;
                     case PAYMENTREPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -267,6 +269,7 @@ public class FragmentGenerateReport extends Fragment {
                         getPaymentReport();
                         break;
                     case SERVICECOMPANYREPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -275,9 +278,12 @@ public class FragmentGenerateReport extends Fragment {
                         getServiceCompanyReport();
                         break;
                     case FACILITYREPORT:
+                        parent.showDialogProgressBar();
                         getFacilityReport();
+                        parent.hideDialogProgressBar();
                         break;
                     case PAYMENT1REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             year = Integer.parseInt(editTextDateStart.getText().toString());
                         } catch (Exception ignore) {
@@ -286,6 +292,7 @@ public class FragmentGenerateReport extends Fragment {
                         getPayment1Report();
                         break;
                     case PAYMENT2REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             year = Integer.parseInt(editTextDateStart.getText().toString());
                         } catch (Exception ignore) {
@@ -294,6 +301,7 @@ public class FragmentGenerateReport extends Fragment {
                         getPayment2Report();
                         break;
                     case PAYMENT3REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             year = Integer.parseInt(editTextDateStart.getText().toString());
                         } catch (Exception ignore) {
@@ -302,6 +310,7 @@ public class FragmentGenerateReport extends Fragment {
                         getPayment3Report();
                         break;
                     case PAYMENT4REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             year = Integer.parseInt(editTextDateStart.getText().toString());
                         } catch (Exception ignore) {
@@ -310,6 +319,7 @@ public class FragmentGenerateReport extends Fragment {
                         getPayment4Report();
                         break;
                     case DEPT1REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -323,6 +333,7 @@ public class FragmentGenerateReport extends Fragment {
                         getDept1Report();
                         break;
                     case DEPT2REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -336,6 +347,7 @@ public class FragmentGenerateReport extends Fragment {
                         getDept2Report();
                         break;
                     case DEPT3REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -349,6 +361,7 @@ public class FragmentGenerateReport extends Fragment {
                         getDept3Report();
                         break;
                     case DEPT4REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -362,6 +375,7 @@ public class FragmentGenerateReport extends Fragment {
                         getDept4Report();
                         break;
                     case DEPT5REPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -375,9 +389,11 @@ public class FragmentGenerateReport extends Fragment {
                         getDept5Report();
                         break;
                     case CONTRACTORREPORT:
+                        parent.showDialogProgressBar();
                         getContractorReport();
                         break;
                     case TECHNICIANPLANREPORT:
+                        parent.showDialogProgressBar();
                         try {
                             Date date = format.parse(editTextDateStart.getText().toString());
                             dateMS1 = date.getTime();
@@ -406,12 +422,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -435,12 +453,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -461,12 +481,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -487,12 +509,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -513,12 +537,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -539,12 +565,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -565,12 +593,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -591,12 +621,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -619,12 +651,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -647,12 +681,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -675,12 +711,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -703,12 +741,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -731,12 +771,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -757,12 +799,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override
@@ -783,12 +827,14 @@ public class FragmentGenerateReport extends Fragment {
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
                 parent.popupInfo("Ошибка " + mes);
+                parent.hideDialogProgressBar();
             }
 
             @Override
             public void onError(UniException ee) {
                 ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
                 parent.popupInfo(ee.toString());
+                parent.hideDialogProgressBar();
             }
 
             @Override

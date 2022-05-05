@@ -35,14 +35,16 @@ public class FragmentGraph extends Fragment {
     private String[] names;
     private String title;
     private int type;
+    private String labelY = "";
 
 
-    public FragmentGraph(MainActivity parent, Long[] tbl, int type, String[] names, String title) {
+    public FragmentGraph(MainActivity parent, Long[] tbl, int type, String[] names, String title, String labelY) {
         this.parent = parent;
         this.tbl = tbl;
         this.type = type;
         this.names = names;
         this.title = title;
+        this.labelY = labelY;
     }
 
     @Nullable
@@ -122,7 +124,7 @@ public class FragmentGraph extends Fragment {
                             return "";
                         } else {
                             // show currency for y values
-                            return super.formatLabel(value, isValueX) + "р";
+                            return super.formatLabel(value, isValueX) + labelY;
                         }
                     }
                 });

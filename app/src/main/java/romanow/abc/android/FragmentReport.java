@@ -53,7 +53,7 @@ public class FragmentReport extends Fragment {
         ctx = AppData.ctx();
         sessionToken = ctx.loginSettings().getSessionToken();
         createTable(view);
-
+        parent.hideDialogProgressBar();
     }
 
     private void createTable(@NonNull View view){
@@ -76,70 +76,70 @@ public class FragmentReport extends Fragment {
             textView.setHeight(tbl[0][j].getHeight());
             textView.setGravity(Gravity.CENTER);
             setBackgroundText(textView, tbl[0][j]);
+
+            final int iSelect = 0;
             final int jSelect = j;
+            // слушатель на выделение колонки
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clearSelect();
+                    if ((iSelected == iSelect) && (jSelected == jSelect)) {
+                        iSelected = 0;
+                        jSelected = 0;
+                        return;
+                    }
+                    iSelected = iSelect;
+                    jSelected = jSelect;
+                    addSelectCol();
+                }
+            });
+            // создание гистограммы слушатель
             if (tbl[0][j].getGraph() == 1) {
                 item.setClickable(true);
-                item.setOnClickListener(new View.OnClickListener() {
+                item.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public boolean onLongClick(View view) {
                         int ind = tbl[0][jSelect].getIndexName();
-                        int selectedCount = 0;
                         ArrayList<String> list = (ArrayList<String>) Arrays.stream(tbl)
                                 .skip(1)
+                                .limit(tbl[0][jSelect].getDataSize())
                                 .map(e -> "№ п/п " + Arrays.stream(e)
                                         .skip(ind)
                                         .map(ee -> ee.getName())
                                         .findFirst()
                                         .get())
                                 .collect(Collectors.toList());
-                        new MultiListBoxDialogGraph(parent, "Параметры для гистограммы", list, new MultiListBoxListener() {
-                            @Override
-                            public void onSelect(boolean[] selected) {
-                                listIndex.clear();
-                                for (int i = 0; i < selected.length; i++) {
-                                    if (selected[i])listIndex.add(i);
-                                }
-                            }
-                        }, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
-                                Long[] tblTemp = new Long[listIndex.size()];
-                                String[] names = new String[listIndex.size()];
-                                int l = 0;
-                                for (int i : listIndex) {
-                                    tblTemp[l] = tbl[i + 1][jSelect].getValue();
-                                    names[l++] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
-                                }
-                                fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title);
-                                fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
-                            }
-                        }, 6);
-
-//                        new MultiListBoxDialog(parent,
-//                                "Выберите данные для гистограммы",
-//                                list
-//                                , new MultiListBoxListener() {
-//                            @Override
-//                            public void onSelect(boolean[] selected) {
-//                                ctx.toLog(false,"ура");
-//                            }
-//                        });
-//                        String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
-//                        Long[] tblTemp = new Long[6];
-//                        String[] names = new String[6];
-//                        for (int i = 0; i < 6; i++) {
-//                            tblTemp[i] = tbl[i + 1][jSelect].getValue();
-//                            names[i] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
-//                        }
-//                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title);
-//                        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
-//                        fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
-//                        fragmentTransaction.addToBackStack(null);
-//                        fragmentTransaction.commit();
+                        new MultiListBoxDialogGraph(parent,
+                                "Параметры для гистограммы",
+                                list,
+                                new MultiListBoxListener() {
+                                    @Override
+                                    public void onSelect(boolean[] selected) {
+                                        listIndex.clear();
+                                        for (int i = 0; i < selected.length; i++) {
+                                            if (selected[i])listIndex.add(i);
+                                        }
+                                    }},
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
+                                        Long[] tblTemp = new Long[listIndex.size()];
+                                        String[] names = new String[listIndex.size()];
+                                        int l = 0;
+                                        for (int i : listIndex) {
+                                            tblTemp[l] = tbl[i + 1][jSelect].getValue();
+                                            names[l++] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
+                                        }
+                                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title, tbl[0][jSelect].getLabelY());
+                                        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
+                                        fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+                                    }},
+                                6);
+                        return true;
                     }
                 });
             }
@@ -149,6 +149,7 @@ public class FragmentReport extends Fragment {
 
         for (int i = 1; i < tbl.length; i++) {
             list = (LinearLayout) gen.inflate(R.layout.table_list_items, null);
+            // создание колонок с данными
             for(int j = 0; j < tbl[0].length; j++) {
                 final int iSelect = i;
                 final int jSelect = j;
@@ -160,22 +161,41 @@ public class FragmentReport extends Fragment {
                 textView.setWidth(tbl[i][j].getWidth());
                 textView.setHeight(tbl[i][j].getHeight());
                 setBackgroundText(textView, tbl[i][j]);
-                item.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        clearSelect();
-                        if ((iSelected == iSelect) && (jSelected == jSelect)) {
-                            iSelected = 0;
-                            jSelected = 0;
-                            return;
+                if (j == 0) {
+                    item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            clearSelect();
+                            if ((iSelected == iSelect) && (jSelected == jSelect)) {
+                                iSelected = 0;
+                                jSelected = 0;
+                                return;
+                            }
+                            iSelected = iSelect;
+                            jSelected = jSelect;
+                            addSelectRow();
                         }
-                        iSelected = iSelect;
-                        jSelected = jSelect;
-                        addSelect();
-                    }
-                });
+                    });
+                } else {
+                    item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            clearSelect();
+                            if ((iSelected == iSelect) && (jSelected == jSelect)) {
+                                iSelected = 0;
+                                jSelected = 0;
+                                return;
+                            }
+                            iSelected = iSelect;
+                            jSelected = jSelect;
+                            addSelect();
+                        }
+                    });
+                }
+
                 list.addView(item);
             }
+            //
             table.addView(list);
         }
     }
@@ -195,6 +215,16 @@ public class FragmentReport extends Fragment {
         }
         for (int j = 0; j < tbl[0].length; j++) {
             fld[iSelected][j].setBackgroundResource(R.drawable.back_table_selected);
+        }
+    }
+    private void addSelectRow() {
+        for (int j = 0; j < tbl[0].length; j++) {
+            fld[iSelected][j].setBackgroundResource(R.drawable.back_table_selected);
+        }
+    }
+    private void addSelectCol() {
+        for (int i = 1; i < tbl.length; i++) {
+            fld[i][jSelected].setBackgroundResource(R.drawable.back_table_selected);
         }
     }
 

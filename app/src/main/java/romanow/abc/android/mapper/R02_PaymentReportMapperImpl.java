@@ -48,9 +48,13 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         tbl[0][2].setGraph(1);
         tbl[0][2].setIndexName(0);
         tbl[0][2].setStyle(STYLEHEADGIST);
+        tbl[0][2].setDataSize(dataList.size());
+        tbl[0][2].setLabelY("р.");
         tbl[0][3].setGraph(1);
         tbl[0][3].setIndexName(0);
         tbl[0][3].setStyle(STYLEHEADGIST);
+        tbl[0][3].setDataSize(dataList.size());
+        tbl[0][3].setLabelY("р.");
         //----------------------------------------------------------------
 
         OwnDateTime dd = new OwnDateTime(report.begin.timeInMS());

@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -97,6 +98,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     private FragmentListReports fragmentListReports;
     private EmptyFragment emptyFragment;
     private FragmentTransaction fragmentTransaction;
+    private ProgressBarDialog progressBarDialog;
     //--------------------------------------------------------------------------
     private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
         @Override
@@ -239,6 +241,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             NETState = (ImageView) findViewById(R.id.headerNet);
             fragmentListReports = new FragmentListReports();
             emptyFragment = new EmptyFragment();
+            progressBarDialog = new ProgressBarDialog();
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.layoutMain, emptyFragment);
             fragmentTransaction.commit();
@@ -297,7 +300,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 ctx.loginSettings().setFatalMessage("");
                 saveContext();
                 }
-            String title = "Каркас приложения";
+            String title = "Приложение директора";
             addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);
             //addToLogButton("ID: "+getSoftwareId64(),true,null,null);
@@ -956,5 +959,13 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     @Override
     public void onClose() {
 
+    }
+
+    public void showDialogProgressBar() {
+        progressBarDialog.show(getSupportFragmentManager(), "progressBarDialog");
+    }
+
+    public void hideDialogProgressBar() {
+        progressBarDialog.dismiss();
     }
 }

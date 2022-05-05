@@ -8,15 +8,23 @@ public class TableStruct {
     private int width;
     private int indexName;
     private int graph = 0;
+    private int dataSize = 0;
+    private String labelY = "";
 
-    public TableStruct(String name, int style, int height, int width, int graph, Long value, int indexName) {
-        this.name = name;
-        this.style = style;
-        this.height = height;
-        this.width = width;
-        this.graph = graph;
-        this.value = value;
-        this.indexName = indexName;
+    public int getDataSize() {
+        return dataSize;
+    }
+
+    public void setDataSize(int dataSize) {
+        this.dataSize = dataSize;
+    }
+
+    public String getLabelY() {
+        return labelY;
+    }
+
+    public void setLabelY(String labelY) {
+        this.labelY = labelY;
     }
 
     public int getIndexName() {
