@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import firefighter.core.UniException;
 import firefighter.core.reports.R01_TechnicianReport;
@@ -55,8 +57,8 @@ public class FragmentGenerateReport extends Fragment {
     private FragmentReport fragmentReport;
     private FragmentTransaction fragmentTransaction;
     private ReportType reportType;
-    private EditText editTextDateStart;
-    private EditText editTextDateEnd;
+    private CalendarView calendarDateStart;
+    private CalendarView calendarDateEnd;
     private TextView textViewDateStart;
     private TextView textViewDateEnd;
 
@@ -81,117 +83,28 @@ public class FragmentGenerateReport extends Fragment {
         parent = (MainActivity) this.getActivity();
         ctx = AppData.ctx();
         sessionToken = ctx.loginSettings().getSessionToken();
-        editTextDateStart = (EditText) view.findViewById(R.id.editTextDateStart);
-        editTextDateEnd = (EditText) view.findViewById(R.id.editTextDateEnd);
+        calendarDateStart = (CalendarView) view.findViewById(R.id.calendarView);
+        calendarDateEnd = (CalendarView) view.findViewById(R.id.calendarView2);
         textViewDateStart = (TextView) view.findViewById(R.id.textViewDateStart);
         textViewDateEnd = (TextView) view.findViewById(R.id.textViewDateEnd);
-        // формат editText
-        TextWatcher tw1 = new TextWatcher() {
-            private String current = "";
-            private String ddmmyyyy = "DDMMYYYY";
-            private Calendar cal = Calendar.getInstance();
+        //----------------слушатели на календарь------------
+        calendarDateStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(current)) {
-                    String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
-                    String cleanC = current.replaceAll("[^\\d.]|\\.", "");
-
-                    int cl = clean.length();
-                    int sel = cl;
-                    for (int i = 2; i <= cl && i < 6; i += 2) {
-                        sel++;
-                    }
-                    //Fix for pressing delete next to a forward slash
-                    if (clean.equals(cleanC)) sel--;
-
-                    if (clean.length() < 8){
-                        clean = clean + ddmmyyyy.substring(clean.length());
-                    }else{
-                        //This part makes sure that when we finish entering numbers
-                        //the date is correct, fixing it otherwise
-                        int day  = Integer.parseInt(clean.substring(0,2));
-                        int mon  = Integer.parseInt(clean.substring(2,4));
-                        int year = Integer.parseInt(clean.substring(4,8));
-
-                        mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
-                        cal.set(Calendar.MONTH, mon-1);
-                        year = (year<1900)?1900:(year>2100)?2100:year;
-                        cal.set(Calendar.YEAR, year);
-
-                        day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
-                        clean = String.format("%02d%02d%02d",day, mon, year);
-                    }
-
-                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                            clean.substring(2, 4),
-                            clean.substring(4, 8));
-
-                    sel = sel < 0 ? 0 : sel;
-                    current = clean;
-                    editTextDateStart.setText(current);
-                    editTextDateStart.setSelection(sel < current.length() ? sel : current.length());
-                }
+            public void onSelectedDayChange(@NonNull CalendarView view, int year,
+                                            int month, int dayOfMonth) {
+                Date date = new GregorianCalendar(year, month, dayOfMonth).getTime();
+                dateMS1 = date.getTime();
             }
+        });
+        calendarDateEnd.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        };
-        TextWatcher tw2 = new TextWatcher() {
-            private String current = "";
-            private String ddmmyyyy = "DDMMYYYY";
-            private Calendar cal = Calendar.getInstance();
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(current)) {
-                    String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
-                    String cleanC = current.replaceAll("[^\\d.]|\\.", "");
-
-                    int cl = clean.length();
-                    int sel = cl;
-                    for (int i = 2; i <= cl && i < 6; i += 2) {
-                        sel++;
-                    }
-                    //Fix for pressing delete next to a forward slash
-                    if (clean.equals(cleanC)) sel--;
-
-                    if (clean.length() < 8){
-                        clean = clean + ddmmyyyy.substring(clean.length());
-                    }else{
-                        //This part makes sure that when we finish entering numbers
-                        //the date is correct, fixing it otherwise
-                        int day  = Integer.parseInt(clean.substring(0,2));
-                        int mon  = Integer.parseInt(clean.substring(2,4));
-                        int year = Integer.parseInt(clean.substring(4,8));
-
-                        mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
-                        cal.set(Calendar.MONTH, mon-1);
-                        year = (year<1900)?1900:(year>2100)?2100:year;
-                        cal.set(Calendar.YEAR, year);
-
-                        day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
-                        clean = String.format("%02d%02d%02d",day, mon, year);
-                    }
-
-                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                            clean.substring(2, 4),
-                            clean.substring(4, 8));
-
-                    sel = sel < 0 ? 0 : sel;
-                    current = clean;
-                    editTextDateEnd.setText(current);
-                    editTextDateEnd.setSelection(sel < current.length() ? sel : current.length());
-                }
+            public void onSelectedDayChange(@NonNull CalendarView view, int year,
+                                            int month, int dayOfMonth) {
+                Date date = new GregorianCalendar(year, month, dayOfMonth).getTime();
+                dateMS2 = date.getTime();
             }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        };
-
-        // end format editText
+        });
+        //--------------------------------------
 
         //-------------------- выбор параметров генерации от отчёта--------------------------
 
@@ -203,21 +116,18 @@ public class FragmentGenerateReport extends Fragment {
             case DEPT3REPORT:
             case DEPT4REPORT:
             case DEPT5REPORT:
-                editTextDateStart.addTextChangedListener(tw1);
-                editTextDateEnd.addTextChangedListener(tw2);
                 break;
             case SERVICECOMPANYREPORT:
             case TECHNICIANPLANREPORT:
-                editTextDateStart.addTextChangedListener(tw1);
                 textViewDateStart.setText("Выберите дату отчёта");
-                editTextDateEnd.setVisibility(View.GONE);
+                calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
                 break;
             case FACILITYREPORT:
             case CONTRACTORREPORT:
                 textViewDateStart.setText("Для данного отчёта нет параметров");
-                editTextDateStart.setVisibility(View.GONE);
-                editTextDateEnd.setVisibility(View.GONE);
+                calendarDateStart.setVisibility(View.GONE);
+                calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
                 break;
             case PAYMENT1REPORT:
@@ -225,8 +135,7 @@ public class FragmentGenerateReport extends Fragment {
             case PAYMENT3REPORT:
             case PAYMENT4REPORT:
                 textViewDateStart.setText("Выберите год отчёта");
-                editTextDateStart.setHint("YYYY");
-                editTextDateEnd.setVisibility(View.GONE);
+                calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
                 break;
         }
@@ -237,44 +146,17 @@ public class FragmentGenerateReport extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
                 switch (reportType) {
                     case TECHNICIANREPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getTechnicianReport();
                         break;
                     case PAYMENTREPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getPaymentReport();
                         break;
                     case SERVICECOMPANYREPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getServiceCompanyReport();
                         break;
                     case FACILITYREPORT:
@@ -283,108 +165,38 @@ public class FragmentGenerateReport extends Fragment {
                         break;
                     case PAYMENT1REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            year = Integer.parseInt(editTextDateStart.getText().toString());
-                        } catch (Exception ignore) {
-
-                        }
                         getPayment1Report();
                         break;
                     case PAYMENT2REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            year = Integer.parseInt(editTextDateStart.getText().toString());
-                        } catch (Exception ignore) {
-
-                        }
                         getPayment2Report();
                         break;
                     case PAYMENT3REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            year = Integer.parseInt(editTextDateStart.getText().toString());
-                        } catch (Exception ignore) {
-
-                        }
                         getPayment3Report();
                         break;
                     case PAYMENT4REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            year = Integer.parseInt(editTextDateStart.getText().toString());
-                        } catch (Exception ignore) {
-
-                        }
                         getPayment4Report();
                         break;
                     case DEPT1REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getDept1Report();
                         break;
                     case DEPT2REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getDept2Report();
                         break;
                     case DEPT3REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getDept3Report();
                         break;
                     case DEPT4REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getDept4Report();
                         break;
                     case DEPT5REPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
-                        try {
-                            Date date = format.parse(editTextDateEnd.getText().toString());
-                            dateMS2 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getDept5Report();
                         break;
                     case CONTRACTORREPORT:
@@ -393,11 +205,6 @@ public class FragmentGenerateReport extends Fragment {
                         break;
                     case TECHNICIANPLANREPORT:
                         parent.showDialogProgressBar();
-                        try {
-                            Date date = format.parse(editTextDateStart.getText().toString());
-                            dateMS1 = date.getTime();
-                        } catch (ParseException ignore) {
-                        }
                         getTechnicianPlanReport();
                         break;
                 }
