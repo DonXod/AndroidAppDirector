@@ -15,10 +15,6 @@ public class R15_TechnicianPlanReportMapperImpl implements MapperToTable{
 
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
-        final int WIDTH = 300;
-        final int HEIGHT = 130;
-        final int HEADHEIGHT = 400;
-        final int STYLEHEAD = 42;
         int i;
         int j;
 
@@ -29,16 +25,12 @@ public class R15_TechnicianPlanReportMapperImpl implements MapperToTable{
         for (i = 0; i< dataList.size() + 2; i++) {
             for (j = 0; j < listHeader.size(); j++) {
                 tbl[i][j] = new TableStruct();
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
             }
         }
 
         i = 0;
         j = 0;
         for (TableCol col : listHeader) {
-            tbl[i][j].setHeight(HEADHEIGHT);
-            tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
@@ -90,6 +82,8 @@ public class R15_TechnicianPlanReportMapperImpl implements MapperToTable{
             tbl[sz][j++].setName(Integer.toString(0));
         else
             tbl[sz][j++].setName(Integer.toString(sum[4]*100/sum[2]));
+
+        setTblSize(tbl);
         return tbl;
     }
 }

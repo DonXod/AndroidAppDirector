@@ -7,11 +7,10 @@
             <stroke android:width="1dip" android:color="@color/White"/>
         </shape>
     </item>
-    <item>
+    <item xmlns:android="http://schemas.android.com/apk/res/android" android:height="@dimen/high_small" android:width="@dimen/high_small" android:gravity="bottom">
         <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
             android:src="@drawable/gist"
-            android:tileMode="clamp" />
-
+            android:tileMode="disabled" />
     </item>
 
 </layer-list>

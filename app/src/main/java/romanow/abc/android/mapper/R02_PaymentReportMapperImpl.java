@@ -13,11 +13,6 @@ import romanow.abc.android.service.AppData;
 public class R02_PaymentReportMapperImpl implements MapperToTable{
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
-        final int WIDTH = 300;
-        final int HEIGHT = 250;
-        final int HEADHEIGHT = 400;
-        final int STYLEHEAD = 42;
-        final int STYLEHEADGIST = 43;
         int dataCols;
         int i;
         int j;
@@ -30,28 +25,24 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         for (i = 0; i< dataList.size()+5; i++) {
             for (j = 0; j < listHeader.size() + dataCols; j++) {
                 tbl[i][j] = new TableStruct();
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
             }
         }
 
         i = 0;
         j = 0;
         for (TableCol col : listHeader) {
-            tbl[i][j].setHeight(HEADHEIGHT);
-            tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
 
         //-------------------------------Гистограммы-------------------------
         tbl[0][2].setGraph(1);
-        tbl[0][2].setIndexName(0);
+        tbl[0][2].setIndexName(1);
         tbl[0][2].setStyle(STYLEHEADGIST);
         tbl[0][2].setDataSize(dataList.size());
         tbl[0][2].setLabelY("р.");
         tbl[0][3].setGraph(1);
-        tbl[0][3].setIndexName(0);
+        tbl[0][3].setIndexName(1);
         tbl[0][3].setStyle(STYLEHEADGIST);
         tbl[0][3].setDataSize(dataList.size());
         tbl[0][3].setLabelY("р.");
@@ -61,8 +52,6 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         dd.incMonth();
         OwnDateTime cc = new OwnDateTime(dd.timeInMS());
         for (int k = 0; k < dataCols; k++) {
-            tbl[i][j].setHeight(HEADHEIGHT);
-            tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(cc.monthToString());
             cc.incMonth();
@@ -120,6 +109,9 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         tbl[dataList.size()+4][1].setName("не выставлено");
         tbl[dataList.size()+4][1].setStyle(3);
 
+        setTblSize(tbl);
         return tbl;
     }
+
+
 }

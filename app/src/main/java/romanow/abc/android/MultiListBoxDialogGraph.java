@@ -18,7 +18,7 @@ public class MultiListBoxDialogGraph {
     MultiListBoxListener ls=null;
     boolean second=false;
     Activity parent=null;
-    public MultiListBoxDialogGraph(Activity activity, String title, ArrayList<String> src, MultiListBoxListener ff, View.OnClickListener clickListener, int maxSelected){
+    public MultiListBoxDialogGraph(Activity activity, String title, ArrayList<String> src, MultiListBoxListener ff, View.OnClickListener clickListener){
         try {
 
             parent=activity;
@@ -71,7 +71,7 @@ public class MultiListBoxDialogGraph {
                         } else {
                             selected--;
                         }
-                        if (selected > maxSelected || selected <=1) {
+                        if (selected <=1) {
                             button.setClickable(false);
                             button.setTextColor(Color.RED);
                         } else {

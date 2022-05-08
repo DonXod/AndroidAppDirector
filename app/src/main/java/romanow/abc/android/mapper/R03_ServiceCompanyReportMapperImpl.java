@@ -13,11 +13,6 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
 
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
-        final int WIDTH = 300;
-        final int HEIGHT = 200;
-        final int HEADHEIGHT = 400;
-        final int STYLEHEAD = 42;
-        final int STYLEHEADGIST = 43;
         int i;
         int j;
 
@@ -29,16 +24,12 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
         for (i = 0; i< dataList.size() + 1; i++) {
             for (j = 0; j < listHeader.size(); j++) {
                 tbl[i][j] = new TableStruct();
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
             }
         }
 
         i = 0;
         j = 0;
         for (TableCol col : listHeader) {
-            tbl[i][j].setHeight(HEADHEIGHT);
-            tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
@@ -69,6 +60,7 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
             i++;
         }
 
+        setTblSize(tbl);
         return tbl;
     }
 }

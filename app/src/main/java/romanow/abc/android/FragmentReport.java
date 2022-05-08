@@ -104,7 +104,7 @@ public class FragmentReport extends Fragment {
                         ArrayList<String> list = (ArrayList<String>) Arrays.stream(tbl)
                                 .skip(1)
                                 .limit(tbl[0][jSelect].getDataSize())
-                                .map(e -> "№ п/п " + Arrays.stream(e)
+                                .map(e -> Arrays.stream(e)
                                         .skip(ind)
                                         .map(ee -> ee.getName())
                                         .findFirst()
@@ -137,8 +137,7 @@ public class FragmentReport extends Fragment {
                                         fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
                                         fragmentTransaction.addToBackStack(null);
                                         fragmentTransaction.commit();
-                                    }},
-                                6);
+                                    }});
                         return true;
                     }
                 });

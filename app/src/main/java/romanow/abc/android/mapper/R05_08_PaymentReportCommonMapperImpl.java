@@ -26,11 +26,6 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
 
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
-        final int WIDTH = 300;
-        final int HEIGHT = 250;
-        final int HEADHEIGHT = 400;
-        final int STYLEHEAD = 42;
-        I_ReportParams params = null;
         int i;
         int j;
 
@@ -40,24 +35,12 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
         for (i = 0; i< report.pays.size() + 7; i++) {
             for (j = 0; j < listHeader.size(); j++) {
                 tbl[i][j] = new TableStruct();
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
             }
-        }
-
-        try {
-            Field field = report.getClass().getDeclaredField("params");
-            field.setAccessible(true);
-            params = (I_ReportParams) field.get(report);
-        } catch (NoSuchFieldException | IllegalAccessException ignore) {
-
         }
 
         i = 0;
         j = 0;
         for (TableCol col : listHeader) {
-            tbl[i][j].setHeight(HEADHEIGHT);
-            tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
@@ -75,10 +58,6 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
         for (i = 0; i < 20; i++) {
             sums[i] = 0;
         }
-        int commonDepts=0;
-        int commonSets=0;
-        int commonPlans=0;
-        int commonManual=0;
 
         for (i = 1; i < report.pays.size() + 1; i++) {
             j = 0;
@@ -141,6 +120,7 @@ public class R05_08_PaymentReportCommonMapperImpl implements MapperToTable{
         tbl[sz+4][1].setStyle(Values.PIStateColors[Values.PINeedToPay]);
         tbl[sz+5][1].setStyle(Values.ColorBrown);
 
+        setTblSize(tbl);
         return tbl;
     }
 }

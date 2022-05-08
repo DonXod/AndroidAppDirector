@@ -20,9 +20,6 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
 
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
-        final int WIDTH = 300;
-        final int HEIGHT = 250;
-        final int HEADHEIGHT = 400;
         final int STYLEHEAD = 42;
         int i;
         int j;
@@ -37,8 +34,6 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
         for (i = 0; i< data.size() + 2; i++) {
             for (j = 0; j < listHeader.size() - 1; j++) {
                 tbl[i][j] = new TableStruct();
-                tbl[i][j].setHeight(HEIGHT);
-                tbl[i][j].setWidth(WIDTH);
             }
         }
 
@@ -46,8 +41,6 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
         j = 0;
         for (int k = 0; k < listHeader.size() - 1; k++) {
             TableCol col = listHeader.get(k);
-            tbl[i][j].setHeight(HEADHEIGHT);
-            tbl[i][j].setWidth(WIDTH);
             tbl[i][j].setStyle(STYLEHEAD);
             tbl[i][j++].setName(col.getName());
         }
@@ -74,18 +67,6 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
                 }
                 xx.incMonth();
             }
-
-//            OwnDateTime xx = new OwnDateTime(report.firstMonth.timeInMS());
-//            for (int k = 0; k < report.nMonth; k++) {
-//                int sum = item.getSum(xx.year(), xx.month());
-//                sums[k] += sum;
-//                if (sum!=0) {
-//                    tbl[i][j++].setName(Integer.toString(sum));
-//                } else {
-//                    j++;
-//                }
-//                xx.incMonth();
-//            }
         }
 
         int sz = data.size()+1;
@@ -98,6 +79,7 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
             }
         }
 
+        setTblSize(tbl);
         return tbl;
     }
 }
