@@ -124,15 +124,15 @@ public class FragmentReport extends Fragment {
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        String title = "Гистограмма по столбцу \"" + tbl[0][jSelect].getName().toLowerCase()+"\"";
+                                        String title = tbl[0][jSelect].getName();
                                         Long[] tblTemp = new Long[listIndex.size()];
                                         String[] names = new String[listIndex.size()];
                                         int l = 0;
                                         for (int i : listIndex) {
                                             tblTemp[l] = tbl[i + 1][jSelect].getValue();
-                                            names[l++] = "№" + tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
+                                            names[l++] = tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
                                         }
-                                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title, tbl[0][jSelect].getLabelY());
+                                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title, tbl[0][jSelect].getUnit());
                                         fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
                                         fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
                                         fragmentTransaction.addToBackStack(null);
@@ -142,6 +142,56 @@ public class FragmentReport extends Fragment {
                     }
                 });
             }
+            // ----------------------------------------------------------------------------------
+            //------------- Создания Круговой диаграммы ------------------------------------------
+            if (tbl[0][j].getGraph() == 2) {
+                item.setClickable(true);
+                item.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        int ind = tbl[0][jSelect].getIndexName();
+                        ArrayList<String> list = (ArrayList<String>) Arrays.stream(tbl)
+                                .skip(1)
+                                .limit(tbl[0][jSelect].getDataSize())
+                                .map(e -> Arrays.stream(e)
+                                        .skip(ind)
+                                        .map(ee -> ee.getName())
+                                        .findFirst()
+                                        .get())
+                                .collect(Collectors.toList());
+                        new MultiListBoxDialogGraph(parent,
+                                "Параметры для круговой диаграммы",
+                                list,
+                                new MultiListBoxListener() {
+                                    @Override
+                                    public void onSelect(boolean[] selected) {
+                                        listIndex.clear();
+                                        for (int i = 0; i < selected.length; i++) {
+                                            if (selected[i])listIndex.add(i);
+                                        }
+                                    }},
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String title = tbl[0][jSelect].getName();
+                                        Long[] tblTemp = new Long[listIndex.size()];
+                                        String[] names = new String[listIndex.size()];
+                                        int l = 0;
+                                        for (int i : listIndex) {
+                                            tblTemp[l] = tbl[i + 1][jSelect].getValue();
+                                            names[l++] = tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
+                                        }
+                                        fragmentGraph = new FragmentGraph(parent, tblTemp, 2, names, title, tbl[0][jSelect].getUnit());
+                                        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
+                                        fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
+                                        fragmentTransaction.addToBackStack(null);
+                                        fragmentTransaction.commit();
+                                    }});
+                        return true;
+                    }
+                });
+            }
+            //-------------------------------------------------------------------------
             list.addView(item);
         }
         table.addView(list);
@@ -249,6 +299,9 @@ public class FragmentReport extends Fragment {
                 break;
             case 43:
                 textView.setBackgroundResource(R.drawable.back_table_head_gist);
+                break;
+            case 44:
+                textView.setBackgroundResource(R.drawable.back_table_head_pie);
                 break;
             default:
                 textView.setBackgroundResource(R.drawable.back_table);

@@ -1,29 +1,40 @@
 package romanow.abc.android;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-//import com.jjoe64.graphview.BarGraphView;
-//import com.jjoe64.graphview.GraphView;
-//import com.jjoe64.graphview.GraphViewSeries;
 
-import com.jjoe64.graphview.DefaultLabelFormatter;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import romanow.abc.android.service.AppData;
 
@@ -35,112 +46,175 @@ public class FragmentGraph extends Fragment {
     private String[] names;
     private String title;
     private int type;
-    private String labelY = "";
+    private String unit;
+    private int maxString = 15;
+    AlertDialog alertDialog;
 
 
-    public FragmentGraph(MainActivity parent, Long[] tbl, int type, String[] names, String title, String labelY) {
+    public FragmentGraph(MainActivity parent, Long[] tbl, int type, String[] names, String title, String unit) {
         this.parent = parent;
         this.tbl = tbl;
         this.type = type;
         this.names = names;
         this.title = title;
-        this.labelY = labelY;
+        this.unit = unit;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_graph, container, false);
-        GraphView graph = (GraphView) view.findViewById(R.id.graph);
+        View view;
+        StringBuilder stringBuilder = new StringBuilder();
+        Description description = new Description();
         switch (type) {
             case 1:
-                DataPoint[] data;
-                if(tbl.length > 3){
-                    data = new DataPoint[8];
-                    data[0] = new DataPoint(0, 0);
-                    for (int i = 1; i < tbl.length + 1; i++) {
-                        data[i] = new DataPoint(i, tbl[i - 1]);
+                view = inflater.inflate(R.layout.fragment_graph, container, false);
+                BarChart barChart = (BarChart) view.findViewById(R.id.barChart);
+                ArrayList<BarEntry> barEntries;
+                ArrayList<String> labelStrings;
+                barEntries = new ArrayList<>();
+                labelStrings = new ArrayList<>();
+                for (int i = 0; i < tbl.length; i++) {
+                    stringBuilder.setLength(0);
+                    barEntries.add(new BarEntry(i, tbl[i]));
+                    if (names[i].length() > maxString) {
+                        stringBuilder.append(names[i]);
+                        stringBuilder.setLength(maxString);
+                        stringBuilder.append("..");
+                        labelStrings.add(stringBuilder.toString());
+                    } else {
+                        labelStrings.add(names[i]);
                     }
-                    if (tbl.length < 6) {
-                        for (int i = tbl.length + 1; i < 8; i++) {
-                            data[i] = new DataPoint(i, 0);
-                        }
-                    }
-                    data[7] = new DataPoint(7, 0);
-                } else {
-                    data = new DataPoint[5];
-                    data[0] = new DataPoint(0, 0);
-                    for (int i = 1; i < tbl.length + 1; i++) {
-                        data[i] = new DataPoint(i, tbl[i - 1]);
-                    }
-                    if (tbl.length < 3) {
-                        for (int i = tbl.length + 1; i < 5; i++) {
-                            data[i] = new DataPoint(i, 0);
-                        }
-                    }
-                    data[4] = new DataPoint(4, 0);
+
                 }
-                BarGraphSeries<DataPoint> seriesBar = new BarGraphSeries(data);
-                //изменения цвета гистограмм
-                seriesBar.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                BarDataSet barDataSet = new BarDataSet(barEntries, title + "(" + unit + ")");
+                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                description.setText("");
+                barChart.setDescription(description);
+                BarData barData = new BarData(barDataSet);
+                barChart.setData(barData);
+
+                XAxis xAxis = barChart.getXAxis();
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(labelStrings));
+                xAxis.setPosition(XAxis.XAxisPosition.TOP);
+                xAxis.setDrawGridLines(false);
+                xAxis.setDrawAxisLine(false);
+                xAxis.setDrawGridLinesBehindData(true);
+                xAxis.setTextSize(15f);
+                xAxis.setGranularity(1f);
+                xAxis.setLabelCount(labelStrings.size());
+                xAxis.setLabelRotationAngle(270);
+
+                YAxis leftAxis = barChart.getAxisLeft();
+                YAxis rightAxis = barChart.getAxisRight();
+                leftAxis.setTextSize(15f);
+                rightAxis.setEnabled(false);
+
+                barChart.getLegend().setTextSize(15f);
+                barChart.getBarData().setValueTextSize(15f);
+
+                barChart.animateY(2000);
+                barChart.setVisibleXRangeMaximum(5);
+                barChart.moveViewToX(1);
+                barChart.invalidate();
+                barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                     @Override
-                    public int get(DataPoint data) {
-                        return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                    public void onValueSelected(Entry e, Highlight h) {
+                        int x = barChart.getBarData().getDataSetForEntry(e).getEntryIndex((BarEntry) e);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(parent);
+                        builder.setCancelable(true);
+                        View nview = LayoutInflater.from(parent).inflate(R.layout.additional_info, null);
+                        TextView label = nview.findViewById(R.id.label_graph);
+                        TextView value = nview.findViewById(R.id.value_graph);
+                        label.setText(names[x]);
+                        value.setText(tbl[x] + " " + unit);
+                        builder.setView(nview);
+                        alertDialog = builder.create();
+                        alertDialog.show();
                     }
-                });
-                // изменение промежутков
-                seriesBar.setSpacing(15);
 
-                //подписи сверху
-                seriesBar.setDrawValuesOnTop(true);
-                seriesBar.setValuesOnTopColor(Color.RED);
-
-
-                //установка данных в граф
-                graph.addSeries(seriesBar);
-
-                //колличество столбцов
-                if(tbl.length > 3) {
-                    graph.getGridLabelRenderer().setNumHorizontalLabels(8);
-                } else {
-                    graph.getGridLabelRenderer().setNumHorizontalLabels(5);
-                }
-
-                // титул графа
-                graph.setTitle(title);
-
-
-                // изменение названий x
-                graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
                     @Override
-                    public String formatLabel(double value, boolean isValueX) {
-                        if (isValueX) {
-                            if((int) value == 0) {
-                                return "";
-                            }
-                            if((int) value < tbl.length + 1) {
-                                return names[((int) value) - 1];
-                            }
-                            return "";
-                        } else {
-                            // show currency for y values
-                            return super.formatLabel(value, isValueX) + labelY;
-                        }
+                    public void onNothingSelected() {
+
                     }
                 });
 
                 break;
 
-
             default:
-                LineGraphSeries<DataPoint> seriesLine = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                        new DataPoint(0, 1),
-                        new DataPoint(1, 5),
-                        new DataPoint(2, 3),
-                        new DataPoint(3, 2),
-                        new DataPoint(4, 6)
+            case 2:
+                view = inflater.inflate(R.layout.fragment_graph_pie, container, false);
+                PieChart pieChart = (PieChart) view.findViewById(R.id.pieChart);
+                ArrayList<PieEntry> pieEntries;
+                pieEntries = new ArrayList<>();
+                stringBuilder = new StringBuilder();
+                Long sum = 0L;
+                for (int i = 0; i < tbl.length; i++) {
+                    stringBuilder.setLength(0);
+                    sum += tbl[i];
+                    if (names[i].length() > maxString) {
+                        stringBuilder.append(names[i]);
+                        stringBuilder.setLength(maxString);
+                        stringBuilder.append("..");
+                        pieEntries.add(new PieEntry(tbl[i], stringBuilder.toString()));
+                    } else {
+                        pieEntries.add(new PieEntry(tbl[i], names[i]));
+                    }
+                }
+                PieDataSet pieDataSet = new PieDataSet(pieEntries, title + "(" + unit + ")");
+                pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                pieDataSet.setSliceSpace(3);
+                description.setText("");
+                pieChart.setDescription(description);
+
+                PieData pieData = new PieData(pieDataSet);
+                pieData.setValueTextSize(15f);
+                pieData.setValueTextColor(Color.BLACK);
+
+                pieChart.setData(pieData);
+
+                Legend legend = pieChart.getLegend();
+                legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+                legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+                legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+                legend.setTextSize(10f);
+                legend.setTextColor(Color.rgb(0,0,0));
+                legend.setWordWrapEnabled(true);
+                legend.setDrawInside(true);
+
+
+                pieChart.setBackgroundColor(Color.rgb(240,240,240));
+                pieChart.setEntryLabelTextSize(14f);
+                pieChart.setEntryLabelColor(Color.rgb(40,40,40));
+                pieChart.setCenterText("Сумма\n" + sum + unit);
+                pieChart.setCenterTextSize(15f);
+                pieChart.animateXY(2000, 2000);
+                pieChart.invalidate();
+                pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                    @Override
+                    public void onValueSelected(Entry e, Highlight h) {
+                        int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(parent);
+                        builder.setCancelable(true);
+                        View nview = LayoutInflater.from(parent).inflate(R.layout.additional_info, null);
+                        TextView label = nview.findViewById(R.id.label_graph);
+                        TextView value = nview.findViewById(R.id.value_graph);
+                        label.setText(names[x]);
+                        value.setText(tbl[x] + " " + unit);
+                        builder.setView(nview);
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+
+                    @Override
+                    public void onNothingSelected() {
+
+                    }
                 });
-                graph.addSeries(seriesLine);
+                break;
+
         }
 
 

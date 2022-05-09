@@ -9,7 +9,7 @@ public class TableStruct {
     private int indexName;
     private int graph = 0;
     private int dataSize = 0;
-    private String labelY = "";
+    private String unit = "";
 
     public int getDataSize() {
         return dataSize;
@@ -19,12 +19,12 @@ public class TableStruct {
         this.dataSize = dataSize;
     }
 
-    public String getLabelY() {
-        return labelY;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setLabelY(String labelY) {
-        this.labelY = labelY;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public int getIndexName() {

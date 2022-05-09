@@ -9,6 +9,7 @@ public interface MapperToTable {
 
     int STYLEHEAD = 42;
     int STYLEHEADGIST = 43;
+    int STYLEHEADPIE = 44;
     int sizeHeightLine = 90;
     int sizeWidthSymbolLine = 26;
     int maxInLine = 15;

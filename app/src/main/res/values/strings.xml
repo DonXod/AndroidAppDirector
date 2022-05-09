@@ -29,4 +29,5 @@
     <string name="date_end">Дата окончания отчёта</string>
     <string name="generate_graph">Создать график</string>
     <string name="button_main">Главная страница</string>
+    <string name="button_select_items">Выбрать всё</string>
 </resources>

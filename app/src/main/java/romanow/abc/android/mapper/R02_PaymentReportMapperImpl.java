@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import firefighter.core.reports.PaymentReportItem;
 import firefighter.core.reports.R02_PaymentReport;
 import firefighter.core.reports.TableCol;
-import firefighter.core.reports.TechnicianReportItem;
 import firefighter.core.utils.OwnDateTime;
 import romanow.abc.android.TableStruct;
 import romanow.abc.android.service.AppData;
@@ -40,12 +39,12 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         tbl[0][2].setIndexName(1);
         tbl[0][2].setStyle(STYLEHEADGIST);
         tbl[0][2].setDataSize(dataList.size());
-        tbl[0][2].setLabelY("р.");
+        tbl[0][2].setUnit("руб.");
         tbl[0][3].setGraph(1);
         tbl[0][3].setIndexName(1);
         tbl[0][3].setStyle(STYLEHEADGIST);
         tbl[0][3].setDataSize(dataList.size());
-        tbl[0][3].setLabelY("р.");
+        tbl[0][3].setUnit("руб.");
         //----------------------------------------------------------------
 
         OwnDateTime dd = new OwnDateTime(report.begin.timeInMS());

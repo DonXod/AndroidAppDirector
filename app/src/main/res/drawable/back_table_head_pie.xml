@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle"  >
+            <solid android:color="@color/YellowGrey" />
+            <stroke android:width="1dip" android:color="@color/White"/>
+        </shape>
+    </item>
+    <item xmlns:android="http://schemas.android.com/apk/res/android" android:height="@dimen/high_small" android:width="@dimen/high_small" android:gravity="bottom">
+        <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+            android:src="@drawable/pie"
+            android:tileMode="disabled" />
+    </item>
+
+</layer-list>

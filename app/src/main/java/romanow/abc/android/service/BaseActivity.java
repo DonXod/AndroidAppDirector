@@ -18,10 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.jjoe64.graphview.GraphView;
-//import com.jjoe64.graphview.GraphViewSeries;
-//import com.jjoe64.graphview.LineGraphView;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

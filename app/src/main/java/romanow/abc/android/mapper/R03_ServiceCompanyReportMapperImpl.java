@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import firefighter.core.reports.R03_ServiceCompanyReport;
 import firefighter.core.reports.ServiceCompanyItem;
 import firefighter.core.reports.TableCol;
-import firefighter.core.reports.TechnicianReportItem;
 import romanow.abc.android.TableStruct;
 import romanow.abc.android.service.AppData;
 
@@ -35,16 +34,16 @@ public class R03_ServiceCompanyReportMapperImpl implements MapperToTable{
         }
 
         //-------------------------------Гистограммы-------------------------
-        tbl[0][2].setGraph(1);
-        tbl[0][2].setIndexName(0);
-        tbl[0][2].setStyle(STYLEHEADGIST);
+        tbl[0][2].setGraph(2);
+        tbl[0][2].setIndexName(1);
+        tbl[0][2].setStyle(STYLEHEADPIE);
         tbl[0][2].setDataSize(dataList.size() - 1);
-        tbl[0][2].setLabelY("шт.");
+        tbl[0][2].setUnit("шт.");
         tbl[0][3].setGraph(1);
-        tbl[0][3].setIndexName(0);
+        tbl[0][3].setIndexName(1);
         tbl[0][3].setStyle(STYLEHEADGIST);
         tbl[0][3].setDataSize(dataList.size() - 1);
-        tbl[0][3].setLabelY("р.");
+        tbl[0][3].setUnit("руб.");
         //----------------------------------------------------------------
 
         i = 1;

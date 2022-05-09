@@ -18,9 +18,11 @@ public class MultiListBoxDialogGraph {
     MultiListBoxListener ls=null;
     boolean second=false;
     Activity parent=null;
+    String[] buttonNameSelect = {"Выбрать всё", "Убрать всё"};
+    TextView[] textViews;
     public MultiListBoxDialogGraph(Activity activity, String title, ArrayList<String> src, MultiListBoxListener ff, View.OnClickListener clickListener){
         try {
-
+            textViews = new TextView[src.size()];
             parent=activity;
             mark = new boolean[src.size()];
             for(int i=0;i<mark.length;i++)
@@ -36,6 +38,36 @@ public class MultiListBoxDialogGraph {
                 public void onClick(View view) {
                     clickListener.onClick(view);
                     myDlg.cancel();
+                }
+            });
+
+            Button buttonSelect = (Button) lrr.findViewById(R.id.buttonSelectItems);
+            buttonSelect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (buttonSelect.getText().equals(buttonNameSelect[0])) {
+                        buttonSelect.setText(buttonNameSelect[1]);
+                        for (int i = 0; i < textViews.length; i++){
+                            textViews[i].setBackgroundResource(R.drawable.background_head_select);
+                            mark[i] = true;
+                        }
+                        selected = textViews.length;
+                    } else {
+                        buttonSelect.setText(buttonNameSelect[0]);
+                        for (int i = 0; i < textViews.length; i++){
+                            textViews[i].setBackgroundResource(R.drawable.background_head);
+                            mark[i] = false;
+                        }
+                        selected = 0;
+                    }
+                    if (selected <=1) {
+                        button.setClickable(false);
+                        button.setTextColor(Color.RED);
+                    } else {
+                        button.setClickable(true);
+                        button.setTextColor(Color.YELLOW);
+                    }
+                    ls.onSelect(mark);
                 }
             });
 
@@ -60,6 +92,7 @@ public class MultiListBoxDialogGraph {
                 xx=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.listbox_item, null);
                 xx.setPadding(5, 5, 5, 5);
                 final TextView tt=(TextView)xx.findViewById(R.id.dialog_listbox_name);
+                textViews[i] = tt;
                 tt.setText(src.get(i));
                 int bg=(mark[i] ? R.drawable.background_head_select : R.drawable.background_head);
                 tt.setBackgroundResource(bg);

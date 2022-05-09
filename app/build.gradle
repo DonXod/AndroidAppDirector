@@ -40,7 +40,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.yandex.android:maps.mobile:4.0.0-lite'
     //implementation fileTree(dir: 'libs', include: ['*.jar'], exclude: [])
-    implementation 'com.jjoe64:graphview:4.2.2'
+    // 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation "com.github.biodunalfet:SlidingSquaresLoader:1.0"
     //implementation files('libs\\GraphView-3.1.4.jar')
     implementation files('libs\\firefightercore.jar')
