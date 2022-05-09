@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ import romanow.abc.android.service.NetCall;
 
 public class FragmentListReports extends Fragment {
 
+    private final ButtonFactory buttonFactory = new ButtonFactory();
+    private LinearLayout listButtons;
     private MainActivity parent;
     private AppData ctx;
     private String sessionToken;
@@ -51,22 +54,22 @@ public class FragmentListReports extends Fragment {
         parent = (MainActivity) this.getActivity();
         ctx = AppData.ctx();
         sessionToken = ctx.loginSettings().getSessionToken();
-
-        technicianButtonList = (Button) view.findViewById(R.id.technicianButtonList);
-        paymentButtonList = (Button) view.findViewById(R.id.paymentButtonList);
-        serviceCompanyButtonList = (Button) view.findViewById(R.id.serviceCompanyButtonList);
-        facilityButtonList = (Button) view.findViewById(R.id.facilityButtonList);
-        payment1ButtonList = (Button) view.findViewById(R.id.payment1ButtonList);
-        payment2ButtonList = (Button) view.findViewById(R.id.payment2ButtonList);
-        payment3ButtonList = (Button) view.findViewById(R.id.payment3ButtonList);
-        payment4ButtonList = (Button) view.findViewById(R.id.payment4ButtonList);
-        dept1ButtonList = (Button) view.findViewById(R.id.dept1ButtonList);
-        dept2ButtonList = (Button) view.findViewById(R.id.dept2ButtonList);
-        dept3ButtonList = (Button) view.findViewById(R.id.dept3ButtonList);
-        dept4ButtonList = (Button) view.findViewById(R.id.dept4ButtonList);
-        dept5ButtonList = (Button) view.findViewById(R.id.dept5ButtonList);
-        contractorButtonList = (Button) view.findViewById(R.id.contractorButtonList);
-        technicianPlanButtonList = (Button) view.findViewById(R.id.technicianPlanButtonList);
+        listButtons = (LinearLayout) view.findViewById(R.id.list_button_report);
+        technicianButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r01));
+        paymentButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r02));
+        serviceCompanyButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r03));
+        facilityButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r04));
+        payment1ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r05));
+        payment2ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r06));
+        payment3ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r07));
+        payment4ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r08));
+        dept1ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r09));
+        dept2ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r10));
+        dept3ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r11));
+        dept4ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r12));
+        dept5ButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r13));
+        contractorButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r14));
+        technicianPlanButtonList = buttonFactory.createButton(parent, listButtons, getResources().getString(R.string.reports_list_r15));
 
         technicianButtonList.setOnClickListener(new View.OnClickListener() {
             @Override

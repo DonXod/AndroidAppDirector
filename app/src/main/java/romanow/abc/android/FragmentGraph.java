@@ -194,7 +194,7 @@ public class FragmentGraph extends Fragment {
                 pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                     @Override
                     public void onValueSelected(Entry e, Highlight h) {
-                        int x = pieChart.getData().getDataSetForEntry(e).getEntryIndex((PieEntry) e);
+                        int x = pieChart.getData().getDataSet().getEntryIndex((PieEntry) e);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(parent);
                         builder.setCancelable(true);
