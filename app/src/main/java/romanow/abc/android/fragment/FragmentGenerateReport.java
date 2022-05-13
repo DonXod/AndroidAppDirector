@@ -1,16 +1,11 @@
-package romanow.abc.android;
+package romanow.abc.android.fragment;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -34,6 +26,10 @@ import firefighter.core.reports.R09_13_DeptReportCommon;
 import firefighter.core.reports.R14_ContractorReport;
 import firefighter.core.reports.R15_TechnicianPlanReport;
 import firefighter.core.utils.OwnDateTime;
+import romanow.abc.android.MainActivity;
+import romanow.abc.android.R;
+import romanow.abc.android.ReportType;
+import romanow.abc.android.TableStruct;
 import romanow.abc.android.mapper.MapperToTable;
 import romanow.abc.android.mapper.R01_TechnicianReportMapperImpl;
 import romanow.abc.android.mapper.R02_PaymentReportMapperImpl;

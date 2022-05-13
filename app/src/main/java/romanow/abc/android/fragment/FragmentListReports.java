@@ -1,4 +1,4 @@
-package romanow.abc.android;
+package romanow.abc.android.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import firefighter.core.UniException;
+import romanow.abc.android.ButtonFactory;
+import romanow.abc.android.MainActivity;
+import romanow.abc.android.R;
+import romanow.abc.android.ReportType;
 import romanow.abc.android.service.AppData;
-import romanow.abc.android.service.NetBack;
-import romanow.abc.android.service.NetCall;
 
 public class FragmentListReports extends Fragment {
 

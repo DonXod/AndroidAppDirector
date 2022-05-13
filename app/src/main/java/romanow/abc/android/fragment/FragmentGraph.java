@@ -1,4 +1,4 @@
-package romanow.abc.android;
+package romanow.abc.android.fragment;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -36,6 +36,8 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import romanow.abc.android.MainActivity;
+import romanow.abc.android.R;
 import romanow.abc.android.service.AppData;
 
 public class FragmentGraph extends Fragment {

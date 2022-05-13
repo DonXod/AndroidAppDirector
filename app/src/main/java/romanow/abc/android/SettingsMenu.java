@@ -36,18 +36,7 @@ public class SettingsMenu extends SettingsMenuBase {
                         }
                 });
             trmain.addView(layout);
-            layout = createItem("Режим техника", set.isTechnicianMode() ? "1" : "0" , new I_EventListener(){
-                @Override
-                public void onEvent(String ss) {
-                    try {
-                        set.setTechnicianMode(Integer.parseInt(ss)!=0);
-                        settingsChanged();
-                        base.overLoad(false);
-                    } catch (Exception ee){
-                        base.popupInfo("Формат числа");}
-                }
-            });
-            trmain.addView(layout);
+
             //---------------------------------------------------------------------------------------
         } catch(Exception ee){
             int a=1;

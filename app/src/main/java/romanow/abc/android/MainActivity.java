@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -45,7 +44,6 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import firefighter.core.constants.Values;
-import firefighter.core.constants.ValuesBase;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -53,9 +51,10 @@ import firefighter.core.API.RestAPIFace;
 import firefighter.core.UniException;
 //import firefighter.core.constants.ValuesBase;
 import firefighter.core.entity.baseentityes.JInt;
-import firefighter.core.utils.GPSPoint;
 import firefighter.core.utils.Pair;
 
+import romanow.abc.android.fragment.EmptyFragment;
+import romanow.abc.android.fragment.FragmentListReports;
 import romanow.abc.android.menu.*;
 import romanow.abc.android.service.AppData;
 import romanow.abc.android.service.Base64Coder;
@@ -93,7 +92,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public final int REQUEST_ENABLE_PHONE = 106;
     public final int REQUEST_ENABLE_AUDIO = 107;
     private ImageView MenuButton;
-    private ImageView GPSState;
     private ImageView NETState;
     private FragmentListReports fragmentListReports;
     private EmptyFragment emptyFragment;
@@ -101,22 +99,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     private ProgressBarDialog progressBarDialog;
     private Button headerRenderMenu;
     //--------------------------------------------------------------------------
-    private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            GPSPoint gps = new GPSPoint();
-            int state = intent.getIntExtra("state",ValuesBase.GeoNone);
-            gps.setCoord(intent.getDoubleExtra("geoY",0),
-                    intent.getDoubleExtra("geoX",0),false);
-            gps.state(state);
-            if (state == ValuesBase.GeoNone)
-                GPSState.setImageResource(R.drawable.gps_off);
-            if (state == ValuesBase.GeoNet)
-                GPSState.setImageResource(R.drawable.gsm);
-            if (state == ValuesBase.GeoGPS)
-                GPSState.setImageResource(R.drawable.gps);
-            }
-        };
     private I_EventListener logEvent = new I_EventListener() {
         @Override
         public void onEvent(String ss) {
@@ -140,14 +122,11 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         super.onStart();
         IntentFilter filter = new IntentFilter(AppData.Event_CState);
         this.registerReceiver(receiver, filter);
-        filter = new IntentFilter(AppData.Event_GPS);
-        this.registerReceiver(gpsReceiver, filter);
         }
     @Override
     protected void onStop() {
         super.onStop();
         unregisterReceiver(receiver);
-        unregisterReceiver(gpsReceiver);
         }
     //----------------------------------------------------------------------------------------------
     @Override
@@ -236,7 +215,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             setContentView(R.layout.activity_main);
             MenuButton = (ImageView) findViewById(R.id.headerMenu);
-            GPSState = (ImageView) findViewById(R.id.headerGPS);
             log = (LinearLayout) findViewById(R.id.log);
             scroll = (ScrollView) findViewById(R.id.scroll);
             NETState = (ImageView) findViewById(R.id.headerNet);
@@ -310,7 +288,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 ctx.loginSettings().setFatalMessage("");
                 saveContext();
                 }
-            String title = "Приложение директора";
+            String title = "Лента логирования";
             addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);
             //addToLogButton("ID: "+getSoftwareId64(),true,null,null);
@@ -654,7 +632,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             @Override
             public void onSelect() {
                 log.removeAllViews();
-                String title = "СНЭЭ 2.0";
+                String title = "Лента логирования";
                 addToLog(false, title, 22, 0);
                 }
             });

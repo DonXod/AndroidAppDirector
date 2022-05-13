@@ -1,4 +1,4 @@
-package romanow.abc.android;
+package romanow.abc.android.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

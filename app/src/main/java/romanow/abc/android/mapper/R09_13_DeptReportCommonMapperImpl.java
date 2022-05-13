@@ -20,7 +20,6 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
 
     @Override
     public TableStruct[][] toTable(Object object, AppData ctx) {
-        final int STYLEHEAD = 42;
         int i;
         int j;
 
@@ -42,7 +41,11 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
         for (int k = 0; k < listHeader.size() - 1; k++) {
             TableCol col = listHeader.get(k);
             tbl[i][j].setStyle(STYLEHEAD);
-            tbl[i][j++].setName(col.getName());
+            if (col.getName() == null) {
+                tbl[i][j++].setName("");
+            } else {
+                tbl[i][j++].setName(col.getName());
+            }
         }
 
         int sums[] = new int[report.nMonth - 1];
@@ -55,7 +58,11 @@ public class R09_13_DeptReportCommonMapperImpl implements MapperToTable{
 
             SumMapMonth item = data.getData().get(i-1);
             tbl[i][j++].setName(Integer.toString(i));
-            tbl[i][j++].setName(item.getTitle());
+            if (item.getTitle() == null) {
+                tbl[i][j++].setName("");
+            } else {
+                tbl[i][j++].setName(item.getTitle());
+            }
             OwnDateTime xx = new OwnDateTime(report.firstMonth.timeInMS());
             for (int k = 0; k < report.nMonth - 1; k++) {
                 if (item.getData().stream().filter(e -> e.year == xx.year() && e.month == xx.month()).count() == 0 ) {

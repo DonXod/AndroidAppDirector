@@ -1,4 +1,4 @@
-package romanow.abc.android;
+package romanow.abc.android.fragment;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,12 +13,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import romanow.abc.android.MainActivity;
+import romanow.abc.android.MultiListBoxDialogGraph;
+import romanow.abc.android.MultiListBoxListener;
+import romanow.abc.android.R;
+import romanow.abc.android.TableStruct;
 import romanow.abc.android.service.AppData;
 
 public class FragmentReport extends Fragment {
