@@ -15,7 +15,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "romanow.abc.android"
+        applicationId "naumov.abc.android"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1

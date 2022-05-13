@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="romanow.abc.android.MainActivity">
+    tools:context="naumov.abc.android.MainActivity">
     <item
         android:id="@+id/action_dir"
         android:orderInCategory="101"
