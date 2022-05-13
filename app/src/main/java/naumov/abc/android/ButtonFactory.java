@@ -1,4 +1,4 @@
-package naumov.abc.android.factory;
+package naumov.abc.android;
 
 import android.app.Activity;
 import android.widget.Button;

@@ -111,6 +111,4 @@ public class R02_PaymentReportMapperImpl implements MapperToTable{
         setTblSize(tbl);
         return tbl;
     }
-
-
 }

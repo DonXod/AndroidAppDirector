@@ -12,13 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import naumov.abc.android.factory.ButtonFactory;
+import naumov.abc.android.ButtonFactory;
 import naumov.abc.android.MainActivity;
 import naumov.abc.android.R;
-import naumov.abc.android.enumeration.ReportType;
+import naumov.abc.android.ReportType;
 import naumov.abc.android.service.AppData;
 
-public class FragmentListReports extends Fragment {
+public class FragmentListReport extends Fragment {
 
     private final ButtonFactory buttonFactory = new ButtonFactory();
     private LinearLayout listButtons;

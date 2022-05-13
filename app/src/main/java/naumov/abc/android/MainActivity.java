@@ -26,13 +26,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.gson.Gson;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -44,14 +37,11 @@ import firefighter.core.API.RestAPIFace;
 import firefighter.core.UniException;
 //import firefighter.core.constants.ValuesBase;
 import firefighter.core.entity.baseentityes.JInt;
-import firefighter.core.utils.Pair;
 
 import naumov.abc.android.dialog.ListBoxDialog;
-import naumov.abc.android.dialog.MultiListBoxDialog;
 import naumov.abc.android.dialog.ProgressBarDialog;
 import naumov.abc.android.fragment.EmptyFragment;
-import naumov.abc.android.fragment.FragmentListReports;
-import naumov.abc.android.menu.*;
+import naumov.abc.android.fragment.FragmentListReport;
 import naumov.abc.android.service.AppData;
 import naumov.abc.android.service.BaseActivity;
 import naumov.abc.android.service.NetBack;
@@ -81,7 +71,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public final int REQUEST_ENABLE_AUDIO = 107;
     private ImageView MenuButton;
     private ImageView NETState;
-    private FragmentListReports fragmentListReports;
+    private FragmentListReport fragmentListReport;
     private EmptyFragment emptyFragment;
     private FragmentTransaction fragmentTransaction;
     private ProgressBarDialog progressBarDialog;
@@ -186,7 +176,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                     fragmentTransaction.commit();
                 }
             });
-            fragmentListReports = new FragmentListReports();
+            fragmentListReport = new FragmentListReport();
             emptyFragment = new EmptyFragment();
             progressBarDialog = new ProgressBarDialog();
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -393,7 +383,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                     return;
                 }
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.layoutMain, fragmentListReports);
+                fragmentTransaction.replace(R.id.layoutMain, fragmentListReport);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

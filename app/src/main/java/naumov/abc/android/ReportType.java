@@ -1,4 +1,4 @@
-package naumov.abc.android.enumeration;
+package naumov.abc.android;
 
 public enum ReportType {
     TECHNICIANREPORT, PAYMENTREPORT, SERVICECOMPANYREPORT,

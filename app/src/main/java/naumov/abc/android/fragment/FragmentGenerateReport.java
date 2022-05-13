@@ -28,7 +28,7 @@ import firefighter.core.reports.R15_TechnicianPlanReport;
 import firefighter.core.utils.OwnDateTime;
 import naumov.abc.android.MainActivity;
 import naumov.abc.android.R;
-import naumov.abc.android.enumeration.ReportType;
+import naumov.abc.android.ReportType;
 import naumov.abc.android.TableStruct;
 import naumov.abc.android.mapper.MapperToTable;
 import naumov.abc.android.mapper.R01_TechnicianReportMapperImpl;

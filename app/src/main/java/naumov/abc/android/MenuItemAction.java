@@ -1,4 +1,4 @@
-package naumov.abc.android.menu;
+package naumov.abc.android;
 
 public abstract class MenuItemAction {
     public final String title;
