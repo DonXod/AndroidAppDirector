@@ -223,8 +223,9 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 ctx.loginSettings().setFatalMessage("");
                 saveContext();
                 }
-            String title = "Лента логирования";
+            String title = "Лента истории приложения";
             addToLog(false, title, 22, 0);
+            addToLog(false, "Приложение директора для визуализации отчётов компании");
             } catch (Exception ee) {
                 errorMes(createFatalMessage(ee, 10));
                 }
@@ -392,7 +393,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             @Override
             public void onSelect() {
                 log.removeAllViews();
-                String title = "Лента логирования";
+                String title = "Лента истории приложения";
                 addToLog(false, title, 22, 0);
                 }
             });

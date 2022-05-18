@@ -42,6 +42,7 @@ import naumov.abc.android.mapper.R15_TechnicianPlanReportMapperImpl;
 import naumov.abc.android.service.AppData;
 import naumov.abc.android.service.NetBack;
 import naumov.abc.android.service.NetCall;
+import naumov.abc.android.service.ReportService;
 
 public class FragmentGenerateReport extends Fragment {
 
@@ -49,8 +50,7 @@ public class FragmentGenerateReport extends Fragment {
     private AppData ctx;
     private String sessionToken;
     private Button buttonGenerateReport;
-    private MapperToTable mapperToTable;
-    private FragmentReport fragmentReport;
+    private ReportService reportService;
     private FragmentTransaction fragmentTransaction;
     private ReportType reportType;
     private CalendarView calendarDateStart;
@@ -78,6 +78,7 @@ public class FragmentGenerateReport extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         parent = (MainActivity) this.getActivity();
         ctx = AppData.ctx();
+        reportService = new ReportService();
         sessionToken = ctx.loginSettings().getSessionToken();
         calendarDateStart = (CalendarView) view.findViewById(R.id.calendarView);
         calendarDateEnd = (CalendarView) view.findViewById(R.id.calendarView2);
@@ -145,509 +146,68 @@ public class FragmentGenerateReport extends Fragment {
                 switch (reportType) {
                     case TECHNICIANREPORT:
                         parent.showDialogProgressBar();
-                        getTechnicianReport();
+                        reportService.getTechnicianReport(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case PAYMENTREPORT:
                         parent.showDialogProgressBar();
-                        getPaymentReport();
+                        reportService.getPaymentReport(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case SERVICECOMPANYREPORT:
                         parent.showDialogProgressBar();
-                        getServiceCompanyReport();
+                        reportService.getServiceCompanyReport(parent, ctx, sessionToken, dateMS1);
                         break;
                     case FACILITYREPORT:
                         parent.showDialogProgressBar();
-                        getFacilityReport();
+                        reportService.getFacilityReport(parent, ctx, sessionToken);
                         break;
                     case PAYMENT1REPORT:
                         parent.showDialogProgressBar();
-                        getPayment1Report();
+                        reportService.getPayment1Report(parent, ctx, sessionToken, year);
                         break;
                     case PAYMENT2REPORT:
                         parent.showDialogProgressBar();
-                        getPayment2Report();
+                        reportService.getPayment2Report(parent, ctx, sessionToken, year);
                         break;
                     case PAYMENT3REPORT:
                         parent.showDialogProgressBar();
-                        getPayment3Report();
+                        reportService.getPayment3Report(parent, ctx, sessionToken, year);
                         break;
                     case PAYMENT4REPORT:
                         parent.showDialogProgressBar();
-                        getPayment4Report();
+                        reportService.getPayment4Report(parent, ctx, sessionToken, year);
                         break;
                     case DEPT1REPORT:
                         parent.showDialogProgressBar();
-                        getDept1Report();
+                        reportService.getDept1Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case DEPT2REPORT:
                         parent.showDialogProgressBar();
-                        getDept2Report();
+                        reportService.getDept2Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case DEPT3REPORT:
                         parent.showDialogProgressBar();
-                        getDept3Report();
+                        reportService.getDept3Report(parent, ctx, sessionToken,dateMS1, dateMS2);
                         break;
                     case DEPT4REPORT:
                         parent.showDialogProgressBar();
-                        getDept4Report();
+                        reportService.getDept4Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case DEPT5REPORT:
                         parent.showDialogProgressBar();
-                        getDept5Report();
+                        reportService.getDept5Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case CONTRACTORREPORT:
                         parent.showDialogProgressBar();
-                        getContractorReport();
+                        reportService.getContractorReport(parent, ctx, sessionToken);
                         break;
                     case TECHNICIANPLANREPORT:
                         parent.showDialogProgressBar();
-                        getTechnicianPlanReport();
+                        reportService.getTechnicianPlanReport(parent, ctx, sessionToken, dateMS1);
                         break;
                 }
             }
         };
         buttonGenerateReport.setOnClickListener(listener);
-    }
-
-    private void createFragmentReport(TableStruct tbl[][], String title) {
-        fragmentReport = new FragmentReport(tbl, title);
-        fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.layoutMain, fragmentReport);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
-    private void getTechnicianReport(){
-
-        new NetCall<R01_TechnicianReport>().call(parent, ctx.getService().createTechnicianReport(sessionToken, dateMS1, dateMS2, 0, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R01_TechnicianReport report = (R01_TechnicianReport) val;
-                mapperToTable = new R01_TechnicianReportMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getPaymentReport(){
-
-        OwnDateTime temp = new OwnDateTime(dateMS1);
-        temp.decMonth();
-        dateMS1 = temp.timeInMS();
-        new NetCall<R02_PaymentReport>().call(parent, ctx.getService().createPaymentReport(sessionToken, 0,  dateMS1, dateMS2, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R02_PaymentReport report = (R02_PaymentReport) val;
-                mapperToTable = new R02_PaymentReportMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getServiceCompanyReport(){
-
-        new NetCall<R03_ServiceCompanyReport>().call(parent, ctx.getService().createServiceCompanyReport(sessionToken, dateMS1, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R03_ServiceCompanyReport report = (R03_ServiceCompanyReport) val;
-                mapperToTable = new R03_ServiceCompanyReportMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getFacilityReport(){
-
-        new NetCall<R04_FacilityReport>().call(parent, ctx.getService().createFacilitiesReport(sessionToken, 0, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R04_FacilityReport report = (R04_FacilityReport) val;
-                mapperToTable = new R04_FacilityReportMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getPayment1Report(){
-
-        new NetCall<R05_08_PaymentReportCommon>().call(parent, ctx.getService().createPaymentReport1(sessionToken, 0, year, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R05_08_PaymentReportCommon report = (R05_08_PaymentReportCommon) val;
-                mapperToTable = new R05_08_PaymentReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getPayment2Report(){
-
-        new NetCall<R05_08_PaymentReportCommon>().call(parent, ctx.getService().createPaymentReport2(sessionToken, 0,  year, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R05_08_PaymentReportCommon report = (R05_08_PaymentReportCommon) val;
-                mapperToTable = new R05_08_PaymentReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getPayment3Report(){
-
-        new NetCall<R05_08_PaymentReportCommon>().call(parent, ctx.getService().createPaymentReport3(sessionToken, year, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R05_08_PaymentReportCommon report = (R05_08_PaymentReportCommon) val;
-                mapperToTable = new R05_08_PaymentReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getPayment4Report(){
-
-        new NetCall<R05_08_PaymentReportCommon>().call(parent, ctx.getService().createPaymentReport4(sessionToken, year, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R05_08_PaymentReportCommon report = (R05_08_PaymentReportCommon) val;
-                mapperToTable = new R05_08_PaymentReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getDept1Report(){
-        OwnDateTime temp = new OwnDateTime(dateMS1);
-        temp.decMonth();
-        dateMS1 = temp.timeInMS();
-        new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createDeptContractorReport(sessionToken, 0,  dateMS1, dateMS2, false, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R09_13_DeptReportCommon report = (R09_13_DeptReportCommon) val;
-                mapperToTable = new R09_13_DeptReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getDept2Report(){
-        OwnDateTime temp = new OwnDateTime(dateMS1);
-        temp.decMonth();
-        dateMS1 = temp.timeInMS();
-        new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createDeptTechnicianReport(sessionToken, dateMS1, dateMS2, false, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R09_13_DeptReportCommon report = (R09_13_DeptReportCommon) val;
-                mapperToTable = new R09_13_DeptReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getDept3Report(){
-        OwnDateTime temp = new OwnDateTime(dateMS1);
-        temp.decMonth();
-        dateMS1 = temp.timeInMS();
-        new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createDeptServiceReport(sessionToken, dateMS1, dateMS2, false, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R09_13_DeptReportCommon report = (R09_13_DeptReportCommon) val;
-                mapperToTable = new R09_13_DeptReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getDept4Report(){
-        OwnDateTime temp = new OwnDateTime(dateMS1);
-        temp.decMonth();
-        dateMS1 = temp.timeInMS();
-        new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createContractContractorReport(sessionToken, dateMS1, dateMS2, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R09_13_DeptReportCommon report = (R09_13_DeptReportCommon) val;
-                mapperToTable = new R09_13_DeptReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getDept5Report(){
-        OwnDateTime temp = new OwnDateTime(dateMS1);
-        temp.decMonth();
-        dateMS1 = temp.timeInMS();
-        new NetCall<R09_13_DeptReportCommon>().call(parent, ctx.getService().createContractServiceReport(sessionToken, dateMS1, dateMS2, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R09_13_DeptReportCommon report = (R09_13_DeptReportCommon) val;
-                mapperToTable = new R09_13_DeptReportCommonMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getContractorReport(){
-
-        new NetCall<R14_ContractorReport>().call(parent, ctx.getService().createContractorReport(sessionToken, 0,  true), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R14_ContractorReport report = (R14_ContractorReport) val;
-                mapperToTable = new R14_ContractorReportMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
-    }
-
-    private void getTechnicianPlanReport(){
-
-        new NetCall<R15_TechnicianPlanReport>().call(parent, ctx.getService().createTechnicianPlanReport(sessionToken, dateMS1, 0), new NetBack() {
-            @Override
-            public void onError(int code, String mes) {
-                ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");
-                parent.popupInfo("Ошибка " + mes);
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onError(UniException ee) {
-                ctx.toLog(false, "Ошибка keep alive: " + ee.toString() + "сервер недоступен");
-                parent.popupInfo(ee.toString());
-                parent.hideDialogProgressBar();
-            }
-
-            @Override
-            public void onSuccess(Object val) {
-                R15_TechnicianPlanReport report = (R15_TechnicianPlanReport) val;
-                mapperToTable = new R15_TechnicianPlanReportMapperImpl();
-                TableStruct tbl[][] = mapperToTable.toTable(report, ctx);
-                String title = report.getTitle();
-                createFragmentReport(tbl, title);
-            }
-        });
     }
 
 }
