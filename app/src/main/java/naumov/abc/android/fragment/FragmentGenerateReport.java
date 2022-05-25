@@ -143,65 +143,51 @@ public class FragmentGenerateReport extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                parent.showDialogProgressBar();
                 switch (reportType) {
                     case TECHNICIANREPORT:
-                        parent.showDialogProgressBar();
                         reportService.getTechnicianReport(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case PAYMENTREPORT:
-                        parent.showDialogProgressBar();
                         reportService.getPaymentReport(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case SERVICECOMPANYREPORT:
-                        parent.showDialogProgressBar();
                         reportService.getServiceCompanyReport(parent, ctx, sessionToken, dateMS1);
                         break;
                     case FACILITYREPORT:
-                        parent.showDialogProgressBar();
                         reportService.getFacilityReport(parent, ctx, sessionToken);
                         break;
                     case PAYMENT1REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getPayment1Report(parent, ctx, sessionToken, year);
                         break;
                     case PAYMENT2REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getPayment2Report(parent, ctx, sessionToken, year);
                         break;
                     case PAYMENT3REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getPayment3Report(parent, ctx, sessionToken, year);
                         break;
                     case PAYMENT4REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getPayment4Report(parent, ctx, sessionToken, year);
                         break;
                     case DEPT1REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getDept1Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case DEPT2REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getDept2Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case DEPT3REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getDept3Report(parent, ctx, sessionToken,dateMS1, dateMS2);
                         break;
                     case DEPT4REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getDept4Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case DEPT5REPORT:
-                        parent.showDialogProgressBar();
                         reportService.getDept5Report(parent, ctx, sessionToken, dateMS1, dateMS2);
                         break;
                     case CONTRACTORREPORT:
-                        parent.showDialogProgressBar();
                         reportService.getContractorReport(parent, ctx, sessionToken);
                         break;
                     case TECHNICIANPLANREPORT:
-                        parent.showDialogProgressBar();
                         reportService.getTechnicianPlanReport(parent, ctx, sessionToken, dateMS1);
                         break;
                 }

@@ -28,10 +28,6 @@
                 android:textAlignment="center"
                 android:textColor="@color/White"
                 android:textSize="@dimen/high_normal" />
-
-
-
-
         </LinearLayout>
     </ScrollView>
 

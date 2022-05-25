@@ -135,7 +135,8 @@ public class FragmentReport extends Fragment {
                                             tblTemp[l] = tbl[i + 1][jSelect].getValue();
                                             names[l++] = tbl[i + 1][tbl[0][jSelect].getIndexName()].getName();
                                         }
-                                        fragmentGraph = new FragmentGraph(parent, tblTemp, 1, names, title, tbl[0][jSelect].getUnit());
+                                        fragmentGraph = new FragmentGraph(parent,
+                                                tblTemp, 1, names, title, tbl[0][jSelect].getUnit());
                                         fragmentTransaction = parent.getSupportFragmentManager().beginTransaction();
                                         fragmentTransaction.replace(R.id.layoutMain, fragmentGraph);
                                         fragmentTransaction.addToBackStack(null);
@@ -247,7 +248,6 @@ public class FragmentReport extends Fragment {
 
                 list.addView(item);
             }
-            //
             table.addView(list);
         }
     }

@@ -32,7 +32,9 @@ public class ReportService {
 
     public void getTechnicianReport(MainActivity parent, AppData ctx, String sessionToken, long dateMS1, long dateMS2){
 
-        new NetCall<R01_TechnicianReport>().call(parent, ctx.getService().createTechnicianReport(sessionToken, dateMS1, dateMS2, 0, 0), new NetBack() {
+        new NetCall<R01_TechnicianReport>().call(parent,
+                ctx.getService().createTechnicianReport(sessionToken, dateMS1, dateMS2, 0, 0),
+                new NetBack() {
             @Override
             public void onError(int code, String mes) {
                 ctx.toLog(false, "Ошибка keep alive: " + mes + "сервер недоступен");

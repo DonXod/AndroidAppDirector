@@ -215,8 +215,6 @@ public class FragmentGraph extends Fragment {
                 break;
 
         }
-
-
         return view;
     }
 
