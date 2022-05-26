@@ -129,14 +129,14 @@ public class FragmentGenerateReport extends Fragment {
             case DEPT3REPORT:
             case DEPT4REPORT:
             case DEPT5REPORT:
-                spinner.setVisibility(view.GONE);
+                spinner.setVisibility(View.GONE);
                 break;
             case SERVICECOMPANYREPORT:
             case TECHNICIANPLANREPORT:
                 textViewDateStart.setText("Выберите дату отчёта");
                 calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
-                spinner.setVisibility(view.GONE);
+                spinner.setVisibility(View.GONE);
                 break;
             case FACILITYREPORT:
             case CONTRACTORREPORT:
@@ -144,7 +144,7 @@ public class FragmentGenerateReport extends Fragment {
                 calendarDateStart.setVisibility(View.GONE);
                 calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
-                spinner.setVisibility(view.GONE);
+                spinner.setVisibility(View.GONE);
                 break;
             case PAYMENT1REPORT:
             case PAYMENT2REPORT:
