@@ -9,9 +9,9 @@ public interface MapperToTable {
     int STYLEHEADGIST = 43;
     int STYLEHEADPIE = 44;
     int sizeHeightLine = 90;
-    int sizeWidthSymbolLine = 26;
+    int sizeWidthSymbolLine = 25;
     int maxInLine = 15;
-    int sizeAddHeight = 60;
+    int sizeAddHeight = 50;
 
     TableStruct[][] toTable(Object object, AppData ctx);
 

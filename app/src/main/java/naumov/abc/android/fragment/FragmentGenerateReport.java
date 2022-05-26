@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,7 @@ public class FragmentGenerateReport extends Fragment {
     private String sessionToken;
     private Button buttonGenerateReport;
     private ReportService reportService;
+    private Spinner spinner;
     private FragmentTransaction fragmentTransaction;
     private ReportType reportType;
     private CalendarView calendarDateStart;
@@ -80,6 +83,7 @@ public class FragmentGenerateReport extends Fragment {
         ctx = AppData.ctx();
         reportService = new ReportService();
         sessionToken = ctx.loginSettings().getSessionToken();
+        spinner = (Spinner) view.findViewById(R.id.spinner);
         calendarDateStart = (CalendarView) view.findViewById(R.id.calendarView);
         calendarDateEnd = (CalendarView) view.findViewById(R.id.calendarView2);
         textViewDateStart = (TextView) view.findViewById(R.id.textViewDateStart);
@@ -101,6 +105,18 @@ public class FragmentGenerateReport extends Fragment {
                 dateMS2 = date.getTime();
             }
         });
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = spinner.getItemAtPosition(i).toString();
+                year = Integer.parseInt(selectedItem);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         //--------------------------------------
 
         //-------------------- выбор параметров генерации от отчёта--------------------------
@@ -113,12 +129,14 @@ public class FragmentGenerateReport extends Fragment {
             case DEPT3REPORT:
             case DEPT4REPORT:
             case DEPT5REPORT:
+                spinner.setVisibility(view.GONE);
                 break;
             case SERVICECOMPANYREPORT:
             case TECHNICIANPLANREPORT:
                 textViewDateStart.setText("Выберите дату отчёта");
                 calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
+                spinner.setVisibility(view.GONE);
                 break;
             case FACILITYREPORT:
             case CONTRACTORREPORT:
@@ -126,6 +144,7 @@ public class FragmentGenerateReport extends Fragment {
                 calendarDateStart.setVisibility(View.GONE);
                 calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
+                spinner.setVisibility(view.GONE);
                 break;
             case PAYMENT1REPORT:
             case PAYMENT2REPORT:
@@ -134,6 +153,7 @@ public class FragmentGenerateReport extends Fragment {
                 textViewDateStart.setText("Выберите год отчёта");
                 calendarDateEnd.setVisibility(View.GONE);
                 textViewDateEnd.setVisibility(View.GONE);
+                calendarDateStart.setVisibility(View.GONE);
                 break;
         }
 

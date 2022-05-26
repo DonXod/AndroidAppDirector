@@ -36,6 +36,16 @@
                 android:textColor="@color/White"
                 android:textSize="@dimen/txt_normal" />
 
+            <Button
+                android:id="@+id/buttonOrientation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Режим просмотра"
+                android:textColor="@color/Yellow"
+                android:textSize="@dimen/txt_normal"
+                style="@style/BlackButton"/>
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

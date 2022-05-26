@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Приложение директора</string>
+    <string name="app_name">ОГК-Директор</string>
     <string name="action_settings">Настройки</string>
     <string name="action_shortOutSide">Основная частота (файл)</string>
     <string name="action_fullOutSide">Подробно (файл)</string>
@@ -30,4 +30,14 @@
     <string name="generate_graph">Создать график</string>
     <string name="button_main">Главная страница</string>
     <string name="button_select_items">Выбрать всё</string>
+    <string-array name="Year">
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+    </string-array>
 </resources>

@@ -1,10 +1,13 @@
 package naumov.abc.android.fragment;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +34,7 @@ public class FragmentReport extends Fragment {
     private String title;
     private TableStruct[][] tbl;
     private TextView fld[][]=null;
+    private Button buttonOrientation;
     private int iSelected;
     private int jSelected;
     private FragmentGraph fragmentGraph;
@@ -55,8 +59,26 @@ public class FragmentReport extends Fragment {
         parent = (MainActivity) this.getActivity();
         ctx = AppData.ctx();
         sessionToken = ctx.loginSettings().getSessionToken();
+        buttonOrientation = (Button) view.findViewById(R.id.buttonOrientation);
+        buttonOrientation.setClickable(true);
+        buttonOrientation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    parent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+                    parent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+            }
+        });
         createTable(view);
         parent.hideDialogProgressBar();
+    }
+
+    @Override
+    public void onPause() {
+        parent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        super.onPause();
     }
 
     private void createTable(@NonNull View view){
