@@ -11,7 +11,7 @@ public interface MapperToTable {
     int sizeHeightLine = 90;
     int sizeWidthSymbolLine = 25;
     int maxInLine = 15;
-    int sizeAddHeight = 50;
+    int sizeAddHeight = 51;
 
     TableStruct[][] toTable(Object object, AppData ctx);
 

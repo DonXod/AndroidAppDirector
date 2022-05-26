@@ -19,7 +19,7 @@
             android:id="@+id/headerRenderMenu"
             style="@style/FormButton"
             android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_height="43dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:clickable="true"
